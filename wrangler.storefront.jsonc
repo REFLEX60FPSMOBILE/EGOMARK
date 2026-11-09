@@ -1,0 +1,26 @@
+{
+  // Sert le storefront statique ET l'API des avis depuis le même Worker, avec
+  // une base D1 locale (.wrangler/state) pour le développement et les tests.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ego-storefront",
+  "main": "src/worker/index.ts",
+  "compatibility_date": "2026-09-29",
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./ego-storefront",
+    "not_found_handling": "404-page",
+    "run_worker_first": true
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ego-reviews",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "vars": {
+    "REVIEW_SALT": "local-dev-salt-change-me"
+  },
+  "observability": { "enabled": true }
+}

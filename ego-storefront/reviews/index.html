@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#151011" />
+  <title>Avis vérifiés — EGO Market</title>
+  <meta name="description" content="Avis clients vérifiés après achat : chaque avis publié sur EGO Market provient d'une commande payée, contrôlée par numéro de commande et e-mail." />
+  <meta name="robots" content="index, follow" />
+  <link rel="icon" type="image/svg+xml" href="/assets/ego-favicon.svg?v=20261109s" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/ego-store.css?v=20261109s" />
+  <link rel="stylesheet" href="/assets/ego-reviews.css?v=20261109s" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Aller au contenu</a>
+
+  <div class="topbar">
+    <div class="container">
+      <div class="topbar-list">
+        <span><i></i>Livraison instantanée</span>
+        <span><i></i>Paiement sécurisé</span>
+        <span><i></i>Support 7j/7</span>
+      </div>
+      <span class="topbar-right">Nouveau · EGO Market</span>
+    </div>
+  </div>
+
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="/index.html" aria-label="EGO Market — accueil">
+        <img src="/assets/ego-wordmark.svg?v=20261109s" alt="EGO Market" />
+      </a>
+      <nav class="nav" aria-label="Navigation principale">
+        <a class="nav-link" href="/products/index.html">Catalogue</a>
+        <a class="nav-link" href="/index.html#categories">Catégories</a>
+        <a class="nav-link" href="/index.html#featured">Sélection</a>
+        <a class="nav-link" href="/index.html#why">Pourquoi EGO</a>
+        <a class="nav-link active" href="/reviews/index.html" aria-current="page">Avis</a>
+      </nav>
+      <div class="header-actions">
+        <a class="btn btn-ghost btn-sm" href="/index.html#featured">Voir la sélection</a>
+        <a class="btn btn-primary btn-sm" href="/products/index.html">Explorer <span aria-hidden="true">→</span></a>
+        <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu">
+          <svg class="icon-bars" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+          <svg class="icon-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="/products/index.html">Catalogue</a>
+    <a href="/index.html#categories">Catégories</a>
+    <a href="/index.html#featured">Sélection</a>
+    <a href="/index.html#why">Pourquoi EGO</a>
+    <a href="/reviews/index.html">Avis</a>
+    <a href="/products/index.html" class="btn btn-primary btn-sm" style="margin:1rem 1.25rem;display:inline-flex;">Explorer le catalogue →</a>
+  </div>
+
+  <main id="main">
+    <section class="section reviews-page">
+      <div class="container">
+        <div class="reviews-hero">
+          <div>
+            <span class="eyebrow">Avis clients</span>
+            <h1 class="section-title reviews-title">Des avis réels.<br /><span class="accent">Vérifiés à l’achat.</span></h1>
+          </div>
+          <div class="reviews-hero__side">
+            <p class="reviews-lead">Chaque avis publié ici provient d’une commande payée sur EGO Market. Impossible d’écrire un avis sans numéro de commande et e-mail d’achat valides.</p>
+            <div class="reviews-score" id="reviews-score" hidden>
+              <strong id="reviews-average">—</strong>
+              <div>
+                <div id="reviews-stars" aria-hidden="true"></div>
+                <span id="reviews-count">0 avis vérifié</span>
+              </div>
+            </div>
+            <button class="btn btn-primary" type="button" id="reviews-open-form">Laisser un avis <span aria-hidden="true">→</span></button>
+          </div>
+        </div>
+
+        <div class="reviews-status" id="reviews-status" role="status" aria-live="polite" hidden></div>
+
+        <div class="reviews-list" id="reviews-list" hidden></div>
+
+        <div class="reviews-empty" id="reviews-empty">
+          <span class="reviews-empty__mark" aria-hidden="true">“</span>
+          <p class="reviews-empty__eyebrow">État de la page</p>
+          <h2>Aucun avis vérifié pour l’instant.</h2>
+          <p>Les avis ne peuvent être déposés qu’après une commande payée, et ils sont publiés tels quels : pas de note inventée, pas de témoignage copié, pas de compteur gonflé. Cette page se remplira avec les premiers achats réels.</p>
+          <a class="btn btn-primary" href="#" id="reviews-empty-cta">Laisser un avis vérifié <span aria-hidden="true">→</span></a>
+        </div>
+
+        <form class="review-form" id="review-form" hidden novalidate>
+          <h2>Laisser un avis vérifié</h2>
+          <p class="review-form__hint">Utilisez le numéro de commande reçu après votre achat et l’adresse e-mail utilisée au paiement. La vérification se fait côté serveur, sur la commande réellement enregistrée.</p>
+
+          <div class="review-grid">
+            <label for="rv-order">Numéro de commande
+              <input id="rv-order" name="orderId" type="text" required autocomplete="off" spellcheck="false" placeholder="EGO-1042" />
+            </label>
+            <label for="rv-email">E-mail d’achat
+              <input id="rv-email" name="email" type="email" required autocomplete="email" placeholder="vous@exemple.com" />
+            </label>
+          </div>
+
+          <label for="rv-author">Nom affiché
+            <input id="rv-author" name="author" type="text" required minlength="2" maxlength="40" autocomplete="nickname" placeholder="Prénom ou pseudo" />
+          </label>
+
+          <fieldset class="review-rating">
+            <legend>Note</legend>
+            <div class="review-rating__options">
+              <label><input type="radio" name="rating" value="5" required /><span aria-hidden="true">★★★★★</span> 5</label>
+              <label><input type="radio" name="rating" value="4" /><span aria-hidden="true">★★★★</span> 4</label>
+              <label><input type="radio" name="rating" value="3" /><span aria-hidden="true">★★★</span> 3</label>
+              <label><input type="radio" name="rating" value="2" /><span aria-hidden="true">★★</span> 2</label>
+              <label><input type="radio" name="rating" value="1" /><span aria-hidden="true">★</span> 1</label>
+            </div>
+          </fieldset>
+
+          <label for="rv-body">Votre avis
+            <textarea id="rv-body" name="body" required minlength="20" maxlength="1200" rows="5" placeholder="Ce que vous avez commandé, la livraison, la qualité reçue…"></textarea>
+          </label>
+
+          <p class="review-form__note">Un avis par commande. Les liens, les balises et les propos illégaux sont refusés. Un avis publié peut être masqué par la modération, jamais réécrit.</p>
+
+          <div class="review-actions">
+            <button class="btn btn-primary" type="submit">Publier mon avis</button>
+            <button class="btn btn-ghost" type="button" id="reviews-cancel">Annuler</button>
+          </div>
+        </form>
+
+        <div class="reviews-rules" aria-label="Notre règle sur les avis">
+          <div class="reviews-rule"><span>01</span><h3>Achat vérifié</h3><p>Un avis exige une commande payée et l’e-mail utilisé au paiement, contrôlés par le serveur.</p></div>
+          <div class="reviews-rule"><span>02</span><h3>Aucune note inventée</h3><p>La moyenne et le nombre d’avis sont calculés à partir des avis réellement publiés, jamais saisis à la main.</p></div>
+          <div class="reviews-rule"><span>03</span><h3>Un avis par commande</h3><p>Impossible de multiplier les avis avec la même commande. Les contenus avec liens sont rejetés.</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="/assets/ego-wordmark.svg?v=20261109s" alt="EGO Market" />
+          <p>Le marché numérique premium. Une sélection nette, des prix directs et une livraison sans détour.</p>
+        </div>
+        <div class="footer-col"><h4>Market</h4><a href="/products/index.html">Catalogue</a><a href="/index.html#categories">Catégories</a><a href="/index.html#featured">Sélection</a><a href="/reviews/index.html">Avis</a></div>
+        <div class="footer-col"><h4>Aide</h4><a href="/faq/index.html">FAQ</a><a href="/faq/index.html">Support</a><a href="/index.html#how">Livraison</a><a href="/legal/refund/index.html">Remboursements</a></div>
+        <div class="footer-col"><h4>Légal</h4><a href="/legal/terms/index.html">Conditions</a><a href="/legal/privacy/index.html">Confidentialité</a><a href="/legal/refund/index.html">Remboursement</a></div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="year">2026</span> EGO Market. Tous droits réservés.</span>
+        <div class="pay" aria-label="Moyens de paiement"><span>VISA</span><span>MASTERCARD</span><span>AMEX</span><span>PAYPAL</span><span>CRYPTO</span></div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      const header = document.querySelector('.site-header');
+      const onScroll = () => header && header.classList.toggle('is-scrolled', window.scrollY > 10);
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      const toggle = document.getElementById('menu-toggle');
+      const menu = document.getElementById('mobile-menu');
+      if (toggle && menu) {
+        const close = () => {
+          toggle.setAttribute('aria-expanded', 'false');
+          toggle.setAttribute('aria-label', 'Ouvrir le menu');
+          toggle.classList.remove('is-open');
+          menu.classList.remove('is-open');
+        };
+        toggle.addEventListener('click', () => {
+          const open = toggle.getAttribute('aria-expanded') === 'true';
+          toggle.setAttribute('aria-expanded', String(!open));
+          toggle.setAttribute('aria-label', open ? 'Ouvrir le menu' : 'Fermer le menu');
+          toggle.classList.toggle('is-open', !open);
+          menu.classList.toggle('is-open', !open);
+        });
+        menu.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+      }
+
+      const year = document.getElementById('year');
+      if (year) year.textContent = new Date().getFullYear();
+
+      const cta = document.getElementById('reviews-empty-cta');
+      const openBtn = document.getElementById('reviews-open-form');
+      if (cta && openBtn) {
+        cta.addEventListener('click', (event) => {
+          event.preventDefault();
+          openBtn.click();
+        });
+      }
+    })();
+  </script>
+  <script src="/assets/ego-reviews-app.js?v=20261109s" defer></script>
+</body>
+</html>

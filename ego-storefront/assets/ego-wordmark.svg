@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 80" role="img" aria-label="EGO Market">
+  <rect x="2" y="8" width="64" height="64" rx="18" fill="#6E3439"/>
+  <rect x="2.75" y="8.75" width="62.5" height="62.5" rx="17.25" fill="none" stroke="#B76E72" stroke-opacity=".4" stroke-width="1.5"/>
+  <g fill="#F0E8E3">
+    <rect x="20" y="24" width="8" height="32" rx="4"/>
+    <rect x="20" y="24" width="28" height="8" rx="4"/>
+    <rect x="20" y="36" width="20" height="8" rx="4"/>
+    <rect x="20" y="48" width="28" height="8" rx="4"/>
+  </g>
+  <circle cx="54" cy="21" r="3.5" fill="#D9AAA8"/>
+  <text x="84" y="48" font-family="'Space Grotesk', Arial, sans-serif" font-size="36" font-weight="700" letter-spacing="1" fill="#F0E8E3">EGO</text>
+  <text x="170" y="46" font-family="'Inter', Arial, sans-serif" font-size="20" font-weight="600" letter-spacing="4.5" fill="#D9AAA8">MARKET</text>
+</svg>

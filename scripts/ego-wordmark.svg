@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 64" role="img" aria-label="EGO Market">
+  <rect x="0" y="4" width="56" height="56" rx="16" fill="#E11D2E"/>
+  <path d="M18 18h24v7H26v6h14v6H26v6h16v7H18z" fill="#FFFFFF"/>
+  <text x="72" y="43" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700" letter-spacing="1" fill="#F5F5F5">EGO</text>
+  <text x="150" y="43" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700" letter-spacing="1" fill="#E11D2E">MARKET</text>
+</svg>

@@ -1,0 +1,2257 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#050505" />
+  <title>EGO MARKET — Le marché premium des services Discord</title>
+  <meta name="description" content="EGO Market : boosts, Nitro, bots sur mesure et refontes de serveur. Les services Discord essentiels, centralisés sur une seule plateforme." />
+  <meta property="og:title" content="EGO MARKET — Le marché premium des services Discord" />
+  <meta property="og:description" content="Boosts, Nitro, bots sur mesure et refontes de serveur. Livraison rapide, garantie 30 jours, support 7j/7." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23050505'/%3E%3Cpath d='M20 18h26v7H28v7h16v7H28v7h18v7H20z' fill='%23E11D2E'/%3E%3C/svg%3E" />
+
+  <!-- Typographies : Space Grotesk pour les titres, Inter pour les textes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Palette de la marque, exposée aussi aux utilitaires Tailwind.
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#050505',
+            panel: '#0D0D0D',
+            ember: '#E11D2E',
+            'ember-dark': '#8B0F1A',
+            bone: '#F5F5F5',
+            ash: '#9CA3AF',
+          },
+          fontFamily: {
+            display: ['"Space Grotesk"', 'sans-serif'],
+            sans: ['Inter', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+
+  <style>
+    /* ============================================================
+       EGO MARKET — design system
+       Noir profond, rouge signal, surfaces anthracite.
+       ============================================================ */
+    :root {
+      --ink: #050505;
+      --panel: #0d0d0d;
+      --panel-2: #121214;
+      --ember: #e11d2e;
+      --ember-dark: #8b0f1a;
+      --bone: #f5f5f5;
+      --ash: #9ca3af;
+      --line: rgba(245, 245, 245, 0.08);
+      --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+      --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scrollbar-color: #26262a #070708; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--ink);
+      color: var(--bone);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      overflow-x: hidden;
+    }
+    ::selection { background: var(--ember); color: #fff; }
+    img, svg { display: block; }
+    button { font: inherit; }
+    :focus-visible { outline: 2px solid var(--ember); outline-offset: 3px; }
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: #070708; }
+    ::-webkit-scrollbar-thumb { background: #26262a; border: 2px solid #070708; border-radius: 999px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--ember-dark); }
+
+    section[id], footer[id] { scroll-margin-top: 92px; }
+
+    .container-x { width: 100%; max-width: 1200px; margin-inline: auto; padding-inline: 1.25rem; }
+
+    /* Lien d'évitement pour les lecteurs d'écran et le clavier */
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      z-index: 100;
+      padding: 0.7rem 1rem;
+      background: var(--ember);
+      color: #fff;
+      border-radius: 0 0 10px 0;
+      font-size: 0.85rem;
+      text-decoration: none;
+    }
+    .skip-link:focus { left: 0; }
+
+    /* Décor de fond : grille technique + grain discret */
+    .grid-field {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(245, 245, 245, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245, 245, 245, 0.03) 1px, transparent 1px);
+      background-size: 72px 72px;
+      -webkit-mask-image: radial-gradient(ellipse 95% 65% at 50% 0%, #000 10%, transparent 72%);
+      mask-image: radial-gradient(ellipse 95% 65% at 50% 0%, #000 10%, transparent 72%);
+    }
+    .noise {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+    }
+
+    /* ---------- En-tête fixe ---------- */
+    .site-header {
+      position: fixed;
+      inset-inline: 0;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid rgba(245, 245, 245, 0.06);
+      background: rgba(5, 5, 5, 0.62);
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
+      transition: background 0.35s ease, border-color 0.35s ease;
+    }
+    .site-header.is-scrolled {
+      background: rgba(5, 5, 5, 0.9);
+      border-bottom-color: rgba(225, 29, 46, 0.22);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      height: 72px;
+    }
+    .logo {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.02rem;
+      letter-spacing: 0.14em;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .logo span { color: var(--ember); }
+    .nav-desktop { display: none; align-items: center; gap: 1.7rem; }
+    .nav-link {
+      position: relative;
+      padding: 0.35rem 0;
+      font-size: 0.845rem;
+      color: #d1d5db;
+      text-decoration: none;
+      transition: color 0.25s ease;
+    }
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -2px;
+      height: 1px;
+      background: var(--ember);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .nav-link:hover { color: #fff; }
+    .nav-link:hover::after { transform: scaleX(1); }
+    .header-actions { display: flex; align-items: center; gap: 0.6rem; }
+    .header-cta { display: none; }
+
+    .cart-btn {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(245, 245, 245, 0.03);
+      color: var(--bone);
+      cursor: pointer;
+      transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    }
+    .cart-btn:hover {
+      border-color: rgba(225, 29, 46, 0.5);
+      background: rgba(225, 29, 46, 0.08);
+      box-shadow: 0 0 22px rgba(225, 29, 46, 0.25);
+    }
+    .cart-btn svg { width: 18px; height: 18px; }
+    .cart-count {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 4px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: var(--ember);
+      color: #fff;
+      font-size: 0.6rem;
+      font-weight: 700;
+      line-height: 1;
+      box-shadow: 0 0 14px rgba(225, 29, 46, 0.85);
+    }
+    .menu-btn {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(245, 245, 245, 0.03);
+      color: var(--bone);
+      cursor: pointer;
+    }
+    .menu-btn svg { width: 18px; height: 18px; }
+    .menu-x { display: none; }
+    .menu-btn.menu-open .menu-bars { display: none; }
+    .menu-btn.menu-open .menu-x { display: block; }
+
+    /* Menu déroulant mobile */
+    .mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      visibility: hidden;
+      border-top: 1px solid transparent;
+      background: rgba(5, 5, 5, 0.98);
+      transition: max-height 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s ease, border-color 0.3s ease;
+    }
+    .mobile-menu.is-open {
+      max-height: 520px;
+      opacity: 1;
+      visibility: visible;
+      border-top-color: rgba(245, 245, 245, 0.07);
+      border-bottom: 1px solid rgba(245, 245, 245, 0.07);
+    }
+    .mobile-link {
+      display: block;
+      padding: 0.95rem 1.4rem;
+      color: #e5e7eb;
+      font-size: 0.95rem;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(245, 245, 245, 0.05);
+    }
+    .mobile-link:hover { color: var(--ember); background: rgba(225, 29, 46, 0.05); }
+
+    @media (min-width: 640px) { .header-cta { display: inline-flex; } }
+    @media (min-width: 1024px) {
+      .nav-desktop { display: flex; }
+      .menu-btn { display: none; }
+      .mobile-menu.is-open { max-height: 0; opacity: 0; visibility: hidden; }
+    }
+
+    /* ---------- Boutons ---------- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      border-radius: 999px;
+      padding: 0.88rem 1.5rem;
+      border: 1px solid transparent;
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      text-decoration: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease, background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    }
+    .btn svg { width: 16px; height: 16px; }
+    .btn-primary {
+      background: linear-gradient(180deg, #f23a4b, #c1121f);
+      color: #fff;
+      box-shadow: 0 12px 34px -14px rgba(225, 29, 46, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 48px -14px rgba(225, 29, 46, 1), 0 0 26px rgba(225, 29, 46, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    }
+    .btn-ghost {
+      background: rgba(245, 245, 245, 0.03);
+      border-color: rgba(245, 245, 245, 0.14);
+      color: var(--bone);
+    }
+    .btn-ghost:hover {
+      transform: translateY(-2px);
+      border-color: rgba(225, 29, 46, 0.6);
+      background: rgba(225, 29, 46, 0.08);
+    }
+    .btn-sm { padding: 0.62rem 1.05rem; font-size: 0.79rem; }
+
+    /* ---------- Typographie de section ---------- */
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--ember);
+    }
+    .eyebrow::before {
+      content: "";
+      width: 18px;
+      height: 1px;
+      background: var(--ember);
+      display: inline-block;
+    }
+    .h2 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4.2vw, 3.4rem);
+      font-weight: 600;
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+    }
+    .hero-title {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 10.5vw, 8.4rem);
+      font-weight: 700;
+      line-height: 0.84;
+      letter-spacing: -0.045em;
+      text-transform: uppercase;
+    }
+    .text-gradient-ember {
+      background: linear-gradient(180deg, #ff4a5c 0%, var(--ember) 45%, var(--ember-dark) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 32px rgba(225, 29, 46, 0.28));
+    }
+
+    /* ---------- Héros ---------- */
+    .hero { position: relative; overflow: hidden; padding-top: 8.5rem; padding-bottom: 5rem; }
+    /* Fond vidéo assombri pour garder le texte lisible */
+    .hero-media {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+      background: #050505;
+    }
+    .hero-media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.42;
+      filter: saturate(0.9) contrast(1.05);
+    }
+    .hero-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(5, 5, 5, 0.97) 0%, rgba(5, 5, 5, 0.86) 38%, rgba(5, 5, 5, 0.3) 70%, rgba(5, 5, 5, 0.72) 100%),
+        linear-gradient(180deg, rgba(5, 5, 5, 0.88) 0%, transparent 28%, transparent 62%, #050505 100%);
+    }
+    .hero-aura {
+      position: absolute;
+      z-index: 1;
+      top: -24rem;
+      left: 50%;
+      width: 70rem;
+      height: 70rem;
+      transform: translateX(-50%);
+      pointer-events: none;
+      background: radial-gradient(circle, rgba(225, 29, 46, 0.17), rgba(139, 15, 26, 0.06) 45%, transparent 70%);
+      filter: blur(30px);
+    }
+    #hero-particles { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; pointer-events: none; opacity: 0.75; }
+    .hero-copy { position: relative; z-index: 3; }
+    @media (max-width: 1023px) {
+      .hero-media video { opacity: 0.26; }
+      .hero-media::after {
+        background: linear-gradient(180deg, rgba(5, 5, 5, 0.94) 0%, rgba(5, 5, 5, 0.88) 42%, #050505 100%);
+      }
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(225, 29, 46, 0.3);
+      background: rgba(225, 29, 46, 0.08);
+      color: #ffb3ba;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .pulse-dot {
+      position: relative;
+      width: 6px;
+      height: 6px;
+      flex: 0 0 auto;
+      border-radius: 999px;
+      background: var(--ember);
+      box-shadow: 0 0 12px var(--ember);
+    }
+    .pulse-dot::after {
+      content: "";
+      position: absolute;
+      inset: -4px;
+      border-radius: 999px;
+      border: 1px solid rgba(225, 29, 46, 0.55);
+      animation: ping 2.4s ease-out infinite;
+    }
+    @keyframes ping {
+      0% { transform: scale(0.6); opacity: 0.9; }
+      80%, 100% { transform: scale(1.9); opacity: 0; }
+    }
+
+    /* Vitrine produit du héros */
+    .showcase {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      margin-inline: auto;
+      border-radius: 22px;
+      border: 1px solid rgba(245, 245, 245, 0.1);
+      background: linear-gradient(165deg, rgba(24, 24, 26, 0.96), rgba(8, 8, 9, 0.99));
+      box-shadow: 0 50px 100px -50px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(225, 29, 46, 0.08) inset, 0 0 80px -30px rgba(225, 29, 46, 0.5);
+      overflow: hidden;
+    }
+    .showcase-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid rgba(245, 245, 245, 0.07);
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .dot { width: 7px; height: 7px; border-radius: 999px; background: rgba(245, 245, 245, 0.18); }
+    .showcase-label { margin-left: 0.6rem; font-size: 0.62rem; letter-spacing: 0.18em; color: var(--ash); white-space: nowrap; }
+    .showcase-live {
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.58rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: var(--ember);
+      white-space: nowrap;
+    }
+    .live-dot { width: 5px; height: 5px; border-radius: 999px; background: var(--ember); box-shadow: 0 0 10px var(--ember); }
+    .showcase-stage {
+      position: relative;
+      aspect-ratio: 1 / 1.04;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(70% 60% at 50% 38%, rgba(225, 29, 46, 0.28), transparent 62%),
+        radial-gradient(100% 100% at 82% 100%, rgba(139, 15, 26, 0.26), transparent 60%);
+      overflow: hidden;
+    }
+    .showcase-stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(245, 245, 245, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245, 245, 245, 0.05) 1px, transparent 1px);
+      background-size: 44px 44px;
+      opacity: 0.35;
+      -webkit-mask-image: radial-gradient(circle at 50% 45%, #000, transparent 78%);
+      mask-image: radial-gradient(circle at 50% 45%, #000, transparent 78%);
+    }
+    .stage-ghost {
+      position: absolute;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(7rem, 22vw, 10rem);
+      letter-spacing: -0.06em;
+      color: rgba(245, 245, 245, 0.04);
+      line-height: 1;
+      user-select: none;
+    }
+    .stage-art {
+      position: relative;
+      z-index: 2;
+      width: 190px;
+      height: 190px;
+      filter: drop-shadow(0 0 45px rgba(225, 29, 46, 0.35));
+    }
+    .stage-art svg { width: 100%; height: 100%; }
+    .float-chip {
+      position: absolute;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.5rem 0.7rem;
+      border-radius: 10px;
+      border: 1px solid rgba(245, 245, 245, 0.12);
+      background: rgba(5, 5, 5, 0.72);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 40px -24px rgba(0, 0, 0, 0.9);
+    }
+    .chip-price { left: 1rem; bottom: 1.1rem; flex-direction: column; align-items: flex-start; gap: 0.1rem; }
+    .chip-price span { font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ash); }
+    .chip-price strong { font-family: var(--font-display); font-size: 0.95rem; font-weight: 600; }
+    .chip-stock { right: 1rem; top: 1.1rem; font-size: 0.63rem; color: #e5e7eb; letter-spacing: 0.04em; }
+    .showcase-foot {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.9rem 1rem;
+      border-top: 1px solid rgba(245, 245, 245, 0.07);
+    }
+    .swatches { display: flex; gap: 0.35rem; }
+    .swatches span {
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: var(--c);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 0 1px rgba(5, 5, 5, 0.6);
+    }
+    .foot-label { font-size: 0.63rem; color: var(--ash); letter-spacing: 0.04em; }
+    .mini-btn {
+      margin-left: auto;
+      padding: 0.42rem 0.8rem;
+      border-radius: 999px;
+      border: 1px solid rgba(225, 29, 46, 0.4);
+      background: rgba(225, 29, 46, 0.12);
+      color: #ffd7db;
+      font-size: 0.68rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+    .mini-btn:hover { background: var(--ember); color: #fff; box-shadow: 0 0 24px rgba(225, 29, 46, 0.6); }
+    .showcase-reflection {
+      width: 70%;
+      height: 60px;
+      margin: 1.1rem auto 0;
+      border-radius: 999px;
+      background: radial-gradient(ellipse at center, rgba(225, 29, 46, 0.28), transparent 70%);
+      filter: blur(22px);
+    }
+
+    /* ---------- Bande défilante ---------- */
+    .marquee {
+      position: relative;
+      overflow: hidden;
+      border-block: 1px solid var(--line);
+      background: linear-gradient(90deg, rgba(225, 29, 46, 0.07), transparent 35%, transparent 65%, rgba(225, 29, 46, 0.07));
+      padding-block: 0.95rem;
+    }
+    .marquee-track { display: flex; width: max-content; animation: marquee 32s linear infinite; will-change: transform; }
+    .marquee:hover .marquee-track { animation-play-state: paused; }
+    .marquee-group { display: flex; align-items: center; gap: 2.4rem; padding-right: 2.4rem; }
+    .marquee-item {
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(245, 245, 245, 0.72);
+      white-space: nowrap;
+    }
+    .marquee-item--accent { color: var(--ember); }
+    .marquee-sep { color: var(--ember); font-size: 0.6rem; }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ---------- Cartes ---------- */
+    .card {
+      position: relative;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+      transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.45s ease, box-shadow 0.45s ease;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(225, 29, 46, 0.55);
+      box-shadow: 0 30px 60px -34px rgba(225, 29, 46, 0.7), 0 0 0 1px rgba(225, 29, 46, 0.16) inset;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: radial-gradient(120% 80% at 50% -20%, rgba(225, 29, 46, 0.18), transparent 55%);
+      opacity: 0;
+      transition: opacity 0.45s ease;
+    }
+    .card:hover::before { opacity: 1; }
+
+    .media {
+      position: relative;
+      aspect-ratio: 1 / 1.05;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(245, 245, 245, 0.06);
+      background:
+        radial-gradient(120% 90% at 75% 0%, rgba(225, 29, 46, 0.22), transparent 58%),
+        radial-gradient(100% 80% at 15% 100%, rgba(139, 15, 26, 0.32), transparent 62%),
+        linear-gradient(155deg, #161618, #09090b 72%);
+    }
+    .media::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(245, 245, 245, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245, 245, 245, 0.05) 1px, transparent 1px);
+      background-size: 34px 34px;
+      opacity: 0.3;
+      -webkit-mask-image: radial-gradient(circle at 50% 40%, #000, transparent 76%);
+      mask-image: radial-gradient(circle at 50% 40%, #000, transparent 76%);
+    }
+    .media-ghost {
+      position: absolute;
+      left: 50%;
+      bottom: 0.35rem;
+      transform: translateX(-50%);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 2.4rem;
+      letter-spacing: 0.05em;
+      line-height: 1;
+      color: rgba(245, 245, 245, 0.05);
+      white-space: nowrap;
+      user-select: none;
+    }
+    .media-art {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 1.3rem;
+      pointer-events: none;
+      transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .media-art svg { width: 100%; height: 100%; max-width: 224px; }
+    .product:hover .media-art { transform: scale(1.045); }
+
+    /* Visuels produits recadrés sans le texte incrusté */
+    .media--storefront { aspect-ratio: 16 / 9; background-size: cover; background-position: center; }
+    .media--storefront .media-art,
+    .media--storefront .media-ghost { display: none; }
+    .media--storefront::before { opacity: 0.12; }
+    .media--storefront::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(5, 5, 5, 0.3) 0%, transparent 24%, transparent 80%, rgba(5, 5, 5, 0.22) 100%);
+    }
+    .media--boosts { background-image: url("assets/storefront/products/boosts-1m.webp"); }
+    .media--nitro { background-image: url("assets/storefront/products/nitro.webp"); }
+    .media--bot { background-image: url("assets/storefront/products/discord-generator.webp"); }
+
+    .tag {
+      position: absolute;
+      top: 0.75rem;
+      left: 0.75rem;
+      z-index: 2;
+      padding: 0.28rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.56rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border: 1px solid transparent;
+      line-height: 1.4;
+    }
+    .tag--new { background: var(--ember); color: #fff; box-shadow: 0 6px 20px -6px rgba(225, 29, 46, 0.9); }
+    .tag--hot { background: rgba(5, 5, 5, 0.72); color: var(--bone); border-color: rgba(245, 245, 245, 0.18); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+    .tag--limited { background: rgba(139, 15, 26, 0.2); color: #ff9aa4; border-color: rgba(225, 29, 46, 0.5); }
+
+    .product-name { margin: 0; font-family: var(--font-display); font-size: 1.02rem; font-weight: 600; letter-spacing: -0.01em; }
+    .product-material { margin: 0.2rem 0 0; font-size: 0.74rem; color: var(--ash); }
+    .price { font-family: var(--font-display); font-size: 1rem; font-weight: 600; white-space: nowrap; }
+
+    .add-btn {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      margin-top: 1rem;
+      padding: 0.7rem 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(245, 245, 245, 0.1);
+      background: rgba(245, 245, 245, 0.03);
+      color: var(--bone);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      opacity: 0.85;
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+    }
+    .add-btn svg { width: 14px; height: 14px; }
+    .product:hover .add-btn { opacity: 1; border-color: rgba(225, 29, 46, 0.4); }
+    .add-btn:hover { background: var(--ember); border-color: var(--ember); box-shadow: 0 10px 30px -10px rgba(225, 29, 46, 0.9); opacity: 1; }
+
+    .category-media {
+      position: relative;
+      height: 152px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(245, 245, 245, 0.06);
+      background:
+        radial-gradient(80% 120% at 50% 0%, rgba(225, 29, 46, 0.16), transparent 62%),
+        linear-gradient(160deg, #141416, #0a0a0c);
+    }
+    .category-index {
+      position: absolute;
+      left: 1rem;
+      top: 0.75rem;
+      font-family: var(--font-display);
+      font-size: 0.66rem;
+      letter-spacing: 0.3em;
+      color: rgba(245, 245, 245, 0.35);
+    }
+    .category-icon {
+      display: grid;
+      place-items: center;
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      border: 1px solid rgba(225, 29, 46, 0.25);
+      background: rgba(225, 29, 46, 0.07);
+      color: #ff8b96;
+      box-shadow: 0 0 40px rgba(225, 29, 46, 0.18);
+      transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s ease;
+    }
+    .category-icon svg { width: 28px; height: 28px; stroke-width: 1.4; }
+    .card:hover .category-icon { transform: scale(1.1) rotate(-3deg); box-shadow: 0 0 60px rgba(225, 29, 46, 0.35); }
+
+    .link-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: color 0.3s ease, border-color 0.3s ease;
+    }
+    .link-arrow svg { width: 14px; height: 14px; transition: transform 0.3s ease; }
+    .link-arrow:hover { color: var(--ember); }
+    .link-arrow:hover svg { transform: translate(2px, -2px); }
+
+    /* ---------- Section marque ---------- */
+    .brand-visual {
+      position: relative;
+      min-height: 460px;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background:
+        radial-gradient(90% 80% at 82% 0%, rgba(225, 29, 46, 0.34), transparent 60%),
+        radial-gradient(80% 80% at 8% 100%, rgba(139, 15, 26, 0.4), transparent 65%),
+        linear-gradient(160deg, #101012, #070708);
+    }
+    .brand-visual::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(245, 245, 245, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245, 245, 245, 0.05) 1px, transparent 1px);
+      background-size: 52px 52px;
+      opacity: 0.35;
+      -webkit-mask-image: radial-gradient(circle at 50% 50%, #000, transparent 80%);
+      mask-image: radial-gradient(circle at 50% 50%, #000, transparent 80%);
+    }
+    .brand-ring {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: min(74%, 330px);
+      aspect-ratio: 1;
+      border-radius: 999px;
+      border: 1px solid rgba(225, 29, 46, 0.35);
+      box-shadow: 0 0 90px rgba(225, 29, 46, 0.28), inset 0 0 70px rgba(225, 29, 46, 0.14);
+      animation: slow-spin 28s linear infinite;
+    }
+    .brand-ring::after {
+      content: "";
+      position: absolute;
+      inset: 16%;
+      border-radius: 999px;
+      border: 1px dashed rgba(245, 245, 245, 0.12);
+    }
+    @keyframes slow-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+    .brand-word {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--font-display);
+      font-size: clamp(5rem, 13vw, 10rem);
+      font-weight: 700;
+      letter-spacing: -0.06em;
+      line-height: 0.8;
+      color: rgba(245, 245, 245, 0.07);
+      user-select: none;
+    }
+    .brand-chip {
+      position: absolute;
+      padding: 0.4rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(245, 245, 245, 0.14);
+      background: rgba(5, 5, 5, 0.6);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #e5e7eb;
+    }
+    .brand-chip--tl { left: 1.2rem; top: 1.2rem; }
+    .brand-chip--tr { right: 1.2rem; top: 1.2rem; color: #ffb3ba; border-color: rgba(225, 29, 46, 0.4); }
+    .brand-chip--br { right: 1.2rem; bottom: 1.2rem; }
+
+    .discord-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 2rem;
+      padding: 1rem 1.1rem;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(245, 245, 245, 0.02);
+      text-decoration: none;
+      transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease;
+    }
+    .discord-card:hover { border-color: rgba(225, 29, 46, 0.45); background: rgba(225, 29, 46, 0.05); transform: translateY(-2px); }
+    .discord-card strong { display: block; font-family: var(--font-display); font-size: 0.92rem; font-weight: 600; }
+    .discord-card span span { display: block; margin-top: 0.15rem; font-size: 0.76rem; line-height: 1.55; color: var(--ash); }
+    .discord-card > svg { width: 16px; height: 16px; margin-left: auto; flex: 0 0 auto; color: var(--ash); }
+    .discord-card:hover > svg { color: var(--ember); }
+
+    /* ---------- Avis ---------- */
+    .avatar {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      flex: 0 0 auto;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #ffe3e6;
+      background: linear-gradient(145deg, rgba(225, 29, 46, 0.9), rgba(139, 15, 26, 0.85));
+      box-shadow: 0 0 0 1px rgba(225, 29, 46, 0.35), 0 6px 20px -8px rgba(0, 0, 0, 0.9);
+    }
+    .stars { display: inline-flex; gap: 0.1rem; color: var(--ember); font-size: 0.8rem; letter-spacing: 0.1em; line-height: 1; }
+    .verified {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.22rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid rgba(245, 245, 245, 0.12);
+      background: rgba(245, 245, 245, 0.04);
+      color: var(--ash);
+      font-size: 0.56rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .verified svg { width: 10px; height: 10px; }
+
+    /* ---------- Avantages ---------- */
+    .adv-icon {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      border: 1px solid rgba(225, 29, 46, 0.25);
+      background: rgba(225, 29, 46, 0.07);
+      color: var(--ember);
+      box-shadow: 0 0 30px rgba(225, 29, 46, 0.12);
+    }
+    .adv-icon svg { width: 20px; height: 20px; stroke-width: 1.5; }
+
+    /* ---------- FAQ ---------- */
+    .faq-item {
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(245, 245, 245, 0.02);
+      overflow: hidden;
+      transition: border-color 0.3s ease, background 0.3s ease;
+    }
+    .faq-item.is-open { border-color: rgba(225, 29, 46, 0.4); background: rgba(225, 29, 46, 0.04); }
+    .faq-trigger {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.15rem 1.25rem;
+      border: 0;
+      background: none;
+      color: var(--bone);
+      font-size: 0.93rem;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      transition: color 0.25s ease;
+    }
+    .faq-trigger:hover { color: #fff; }
+    .faq-icon {
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      border: 1px solid rgba(245, 245, 245, 0.14);
+      transition: transform 0.35s ease, background 0.35s ease, border-color 0.35s ease;
+    }
+    .faq-icon svg { width: 14px; height: 14px; }
+    .faq-item.is-open .faq-icon { transform: rotate(45deg); background: var(--ember); border-color: var(--ember); }
+    .faq-panel { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.35s ease; }
+    .faq-item.is-open .faq-panel { opacity: 1; }
+    .faq-panel p { margin: 0; padding: 0 1.25rem 1.2rem; max-width: 64ch; color: var(--ash); font-size: 0.88rem; line-height: 1.7; }
+
+    /* ---------- Newsletter ---------- */
+    .newsletter-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      border: 1px solid rgba(225, 29, 46, 0.28);
+      background:
+        radial-gradient(120% 120% at 85% 0%, rgba(225, 29, 46, 0.28), transparent 55%),
+        radial-gradient(100% 100% at 0% 100%, rgba(139, 15, 26, 0.25), transparent 60%),
+        linear-gradient(160deg, #111113, #08080a);
+      padding: clamp(1.6rem, 4.5vw, 3.2rem);
+      box-shadow: 0 40px 90px -60px rgba(225, 29, 46, 0.8);
+    }
+    .newsletter-form { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.6rem; }
+    .newsletter-input {
+      flex: 1 1 250px;
+      min-width: 0;
+      padding: 0.88rem 1.15rem;
+      border-radius: 999px;
+      border: 1px solid rgba(245, 245, 245, 0.14);
+      background: rgba(5, 5, 5, 0.6);
+      color: var(--bone);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .newsletter-input::placeholder { color: #6b7280; }
+    .newsletter-input:focus { border-color: rgba(225, 29, 46, 0.7); box-shadow: 0 0 0 3px rgba(225, 29, 46, 0.16); }
+    .form-status { min-height: 1.3rem; margin: 0.75rem 0 0; font-size: 0.8rem; color: #ffd7db; }
+    .form-status.is-error { color: #ff8b96; }
+
+    /* ---------- CTA final ---------- */
+    .final-cta {
+      position: relative;
+      overflow: hidden;
+      border-block: 1px solid rgba(225, 29, 46, 0.22);
+      background: linear-gradient(115deg, #050505 0%, #1b0509 45%, #8b0f1a 100%);
+    }
+    .final-cta::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(5, 5, 5, 0.4) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(5, 5, 5, 0.4) 1px, transparent 1px);
+      background-size: 64px 64px;
+      opacity: 0.55;
+      -webkit-mask-image: radial-gradient(circle at 72% 50%, #000, transparent 82%);
+      mask-image: radial-gradient(circle at 72% 50%, #000, transparent 82%);
+    }
+    .final-cta > * { position: relative; z-index: 1; }
+
+    /* ---------- Pied de page ---------- */
+    .site-footer {
+      position: relative;
+      z-index: 10;
+      border-top: 1px solid rgba(245, 245, 245, 0.07);
+      background: #050505;
+      padding-block: 3.5rem 2rem;
+    }
+    .footer-link { color: var(--ash); font-size: 0.84rem; text-decoration: none; transition: color 0.25s ease; }
+    .footer-link:hover { color: var(--ember); }
+    .footer-title { margin: 0 0 1rem; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--bone); }
+
+    /* ---------- Animations au défilement ---------- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transition-delay: var(--d, 0s);
+    }
+    .reveal.is-visible { opacity: 1; transform: none; }
+
+    /* ---------- Notification panier ---------- */
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 1.5rem;
+      z-index: 90;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.8rem 1.1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(225, 29, 46, 0.45);
+      background: rgba(13, 13, 13, 0.97);
+      color: var(--bone);
+      font-size: 0.82rem;
+      box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.9), 0 0 30px rgba(225, 29, 46, 0.2);
+      opacity: 0;
+      transform: translate(-50%, 16px);
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      max-width: calc(100vw - 2rem);
+    }
+    .toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+
+    /* ---------- Accessibilité : mouvement réduit ---------- */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .marquee-track { animation: none; }
+      .brand-ring { animation: none; }
+      .pulse-dot::after { animation: none; }
+      .card, .btn, .add-btn, .media-art, .category-icon { transition: none; }
+      .card:hover { transform: none; }
+      .hero-media video { display: none; }
+      .hero-media::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: url("assets/storefront/hero-poster.webp") center / cover no-repeat;
+        opacity: 0.4;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#accueil">Aller au contenu</a>
+
+  <!-- Décor de fond global -->
+  <div class="grid-field" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
+
+  <!-- ============================================================
+       En-tête fixe : logo, navigation, panier, CTA
+       ============================================================ -->
+  <header id="site-header" class="site-header">
+    <div class="container-x header-inner">
+      <a href="#accueil" class="logo" aria-label="EGO Market, retour en haut">EGO <span>MARKET</span></a>
+
+      <nav class="nav-desktop" aria-label="Navigation principale">
+        <a class="nav-link" href="#accueil">Accueil</a>
+        <a class="nav-link" href="#boutique">Services</a>
+        <a class="nav-link" href="#collections">Offres</a>
+        <a class="nav-link" href="#apropos">À propos</a>
+        <a class="nav-link" href="#contact">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <button id="cart-button" class="cart-btn" type="button" aria-label="Panier, 0 article">
+          <i data-lucide="shopping-bag" aria-hidden="true"></i>
+          <span class="cart-count" data-cart-count>0</span>
+        </button>
+        <a href="#boutique" class="btn btn-primary btn-sm header-cta">Commander</a>
+        <button id="menu-toggle" class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Ouvrir le menu">
+          <svg class="menu-bars" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          <svg class="menu-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Menu mobile, piloté par le bouton hamburger -->
+    <div id="mobile-menu" class="mobile-menu">
+      <nav aria-label="Navigation mobile">
+        <a class="mobile-link" href="#accueil">Accueil</a>
+        <a class="mobile-link" href="#boutique">Services</a>
+        <a class="mobile-link" href="#collections">Offres</a>
+        <a class="mobile-link" href="#apropos">À propos</a>
+        <a class="mobile-link" href="#contact">Contact</a>
+        <div class="px-5 py-4">
+          <a href="#boutique" class="btn btn-primary" style="width:100%">Commander</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu">
+    <!-- ============================================================
+         Héros : promesse, double CTA et vitrine produit
+         ============================================================ -->
+    <section id="accueil" class="hero">
+      <div class="hero-media" aria-hidden="true">
+        <video autoplay muted loop playsinline preload="metadata" poster="assets/storefront/hero-poster.webp">
+          <source src="assets/storefront/hero.webm" type="video/webm">
+        </video>
+      </div>
+      <div class="hero-aura" aria-hidden="true"></div>
+      <canvas id="hero-particles" aria-hidden="true"></canvas>
+
+      <div class="container-x" style="position:relative;z-index:3">
+        <div class="grid gap-14 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
+          <div class="hero-copy">
+            <span class="badge-pill"><span class="pulse-dot" aria-hidden="true"></span>Nouveaux stocks disponibles</span>
+
+            <h1 class="hero-title mt-6">
+              <span class="block">EGO</span>
+              <span class="block text-gradient-ember">MARKET</span>
+            </h1>
+
+            <p class="mt-6 font-display text-xl md:text-2xl" style="letter-spacing:-0.02em">Le marché premium des services Discord.</p>
+            <p class="mt-4 max-w-md text-[0.95rem] leading-relaxed text-ash">
+              Boosts, Nitro, bots sur mesure et refontes de serveur : tout ce qu’il faut pour faire passer
+              ta communauté au niveau supérieur, livré vite et sans intermédiaire.
+            </p>
+
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a href="#boutique" class="btn btn-primary">Découvrir les services <i data-lucide="arrow-right" aria-hidden="true"></i></a>
+              <a href="#collections" class="btn btn-ghost">Voir les offres</a>
+            </div>
+          </div>
+
+          <!-- Vitrine : aperçu du drop en cours -->
+          <div class="reveal" style="--d:.15s">
+            <div class="showcase">
+              <div class="showcase-bar">
+                <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                <span class="showcase-label">EGO / COMMANDE 4821</span>
+                <span class="showcase-live"><span class="live-dot"></span>EN LIGNE</span>
+              </div>
+
+              <div class="showcase-stage">
+                <span class="stage-ghost" aria-hidden="true">24/7</span>
+                <span class="stage-art" aria-hidden="true">
+                  <svg viewBox="0 0 240 240" focusable="false">
+                    <defs>
+                      <radialGradient id="coreHalo" cx="50%" cy="50%" r="50%">
+                        <stop offset="0" stop-color="#e11d2e" stop-opacity=".5" />
+                        <stop offset="1" stop-color="#e11d2e" stop-opacity="0" />
+                      </radialGradient>
+                      <linearGradient id="coreBolt" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stop-color="#ff8b96" />
+                        <stop offset=".5" stop-color="#e11d2e" />
+                        <stop offset="1" stop-color="#8b0f1a" />
+                      </linearGradient>
+                    </defs>
+                    <circle cx="120" cy="120" r="96" fill="url(#coreHalo)" />
+                    <circle cx="120" cy="120" r="64" fill="#0b0b0d" stroke="rgba(245,245,245,.14)" />
+                    <circle cx="120" cy="120" r="64" fill="none" stroke="rgba(225,29,46,.35)" stroke-dasharray="4 10" />
+                    <ellipse cx="120" cy="120" rx="92" ry="34" fill="none" stroke="rgba(225,29,46,.28)" transform="rotate(-24 120 120)" />
+                    <ellipse cx="120" cy="120" rx="92" ry="34" fill="none" stroke="rgba(245,245,245,.12)" transform="rotate(46 120 120)" />
+                    <path d="M130 88l-30 38h18l-9 30 32-39h-18z" fill="url(#coreBolt)" stroke="#ffb3ba" stroke-width="1" />
+                    <circle cx="46" cy="144" r="4" fill="#e11d2e" />
+                    <circle cx="196" cy="86" r="3" fill="rgba(245,245,245,.5)" />
+                    <circle cx="150" cy="34" r="2.5" fill="#e11d2e" />
+                    <circle cx="76" cy="204" r="2.5" fill="rgba(245,245,245,.35)" />
+                  </svg>
+                </span>
+                <div class="float-chip chip-price"><span>Pack 14 Boosts</span><strong>24,99 €</strong></div>
+                <div class="float-chip chip-stock"><span class="live-dot"></span>Livraison en 5 min</div>
+              </div>
+
+              <div class="showcase-foot">
+                <div class="swatches" aria-hidden="true">
+                  <span style="--c:#E11D2E"></span>
+                  <span style="--c:#F5F5F5"></span>
+                  <span style="--c:#2A2A2C"></span>
+                </div>
+                <span class="foot-label">Garantie 30 jours</span>
+                <button class="mini-btn" type="button" data-add="Pack 14 Boosts">Ajouter</button>
+              </div>
+            </div>
+            <div class="showcase-reflection" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         Bande défilante : les mots de la marque
+         ============================================================ -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <div class="marquee-group">
+          <span class="marquee-item marquee-item--accent">EGO MARKET</span><span class="marquee-sep">◆</span>
+          <span class="marquee-item">Boosts &amp; Nitro</span><span class="marquee-sep">◆</span>
+          <span class="marquee-item">Bots sur mesure</span><span class="marquee-sep">◆</span>
+          <span class="marquee-item">Sécurité</span><span class="marquee-sep">◆</span>
+          <span class="marquee-item">Livraison instantanée</span><span class="marquee-sep">◆</span>
+          <span class="marquee-item marquee-item--accent">EGO MARKET</span><span class="marquee-sep">◆</span>
+          <span class="marquee-item">Boosts &amp; Nitro</span><span class="marquee-sep">◆</span>
+          <span class="marquee-item">Bots sur mesure</span><span class="marquee-sep">◆</span>
+          <span class="marquee-item">Sécurité</span><span class="marquee-sep">◆</span>
+          <span class="marquee-item">Livraison instantanée</span><span class="marquee-sep">◆</span>
+        </div>
+        <div class="marquee-group">
+          <span class="marquee-item marquee-item--accent">EGO MARKET</span><span class="marquee-sep">◆</span>
+          <span class="marquee-item">Boosts &amp; Nitro</span><span class="marquee-sep">◆</span>
+          <span class="marquee-item">Bots sur mesure</span><span class="marquee-sep">◆</span>
+          <span class="marquee-item">Sécurité</span><span class="marquee-sep">◆</span>
+          <span class="marquee-item">Livraison instantanée</span><span class="marquee-sep">◆</span>
+          <span class="marquee-item marquee-item--accent">EGO MARKET</span><span class="marquee-sep">◆</span>
+          <span class="marquee-item">Boosts &amp; Nitro</span><span class="marquee-sep">◆</span>
+          <span class="marquee-item">Bots sur mesure</span><span class="marquee-sep">◆</span>
+          <span class="marquee-item">Sécurité</span><span class="marquee-sep">◆</span>
+          <span class="marquee-item">Livraison instantanée</span><span class="marquee-sep">◆</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         Catégories : quatre entrées dans l'univers EGO
+         ============================================================ -->
+    <section id="collections" class="py-20 md:py-28">
+      <div class="container-x">
+        <div class="reveal max-w-2xl">
+          <span class="eyebrow">Catégories</span>
+          <h2 class="h2 mt-4">Explore l’univers EGO</h2>
+          <p class="mt-4 leading-relaxed text-ash">Quatre familles de services, une même exigence : livrer vite, proprement et sans mauvaise surprise.</p>
+        </div>
+
+        <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <article class="card reveal" style="--d:.05s">
+            <div class="category-media">
+              <span class="category-index">01</span>
+              <span class="category-icon"><i data-lucide="zap" aria-hidden="true"></i></span>
+            </div>
+            <div class="p-5">
+              <h3 class="font-display text-lg font-semibold">Boosts &amp; Nitro</h3>
+              <p class="mt-2 text-sm leading-relaxed text-ash">Boosts, Nitro et avantages serveur livrés en quelques minutes.</p>
+              <a href="#boutique" class="link-arrow mt-4">Voir <i data-lucide="arrow-up-right" aria-hidden="true"></i></a>
+            </div>
+          </article>
+
+          <article class="card reveal" style="--d:.1s">
+            <div class="category-media">
+              <span class="category-index">02</span>
+              <span class="category-icon"><i data-lucide="bot" aria-hidden="true"></i></span>
+            </div>
+            <div class="p-5">
+              <h3 class="font-display text-lg font-semibold">Bots sur mesure</h3>
+              <p class="mt-2 text-sm leading-relaxed text-ash">Des bots développés pour tes commandes, tes rôles et ton ton.</p>
+              <a href="#boutique" class="link-arrow mt-4">Voir <i data-lucide="arrow-up-right" aria-hidden="true"></i></a>
+            </div>
+          </article>
+
+          <article class="card reveal" style="--d:.15s">
+            <div class="category-media">
+              <span class="category-index">03</span>
+              <span class="category-icon"><i data-lucide="palette" aria-hidden="true"></i></span>
+            </div>
+            <div class="p-5">
+              <h3 class="font-display text-lg font-semibold">Design de serveur</h3>
+              <p class="mt-2 text-sm leading-relaxed text-ash">Une identité complète : bannière, salons, rôles et emojis.</p>
+              <a href="#boutique" class="link-arrow mt-4">Voir <i data-lucide="arrow-up-right" aria-hidden="true"></i></a>
+            </div>
+          </article>
+
+          <article class="card reveal" style="--d:.2s">
+            <div class="category-media">
+              <span class="category-index">04</span>
+              <span class="category-icon"><i data-lucide="shield" aria-hidden="true"></i></span>
+            </div>
+            <div class="p-5">
+              <h3 class="font-display text-lg font-semibold">Sécurité &amp; modération</h3>
+              <p class="mt-2 text-sm leading-relaxed text-ash">Anti-raid, anti-spam et logs clairs pour garder le contrôle.</p>
+              <a href="#boutique" class="link-arrow mt-4">Voir <i data-lucide="arrow-up-right" aria-hidden="true"></i></a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         Produits mis en avant : six pièces, panier fonctionnel
+         ============================================================ -->
+    <section id="boutique" class="border-t border-white/5 py-20 md:py-24">
+      <div class="container-x">
+        <div class="reveal flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
+          <div class="max-w-2xl">
+            <span class="eyebrow">Services</span>
+            <h2 class="h2 mt-4">Les services les plus demandés</h2>
+            <p class="mt-4 leading-relaxed text-ash">Six services pour commencer. Tout est livré et suivi depuis ton ticket Discord.</p>
+          </div>
+          <a href="#collections" class="link-arrow shrink-0">Tous les services <i data-lucide="arrow-up-right" aria-hidden="true"></i></a>
+        </div>
+
+        <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <!-- Produit 1 -->
+          <article class="card product reveal" style="--d:.04s">
+            <div class="p-3">
+              <div class="media media--storefront media--boosts">
+                <span class="tag tag--new">Nouveau</span>
+                <span class="media-ghost">BOOSTS</span>
+                <span class="media-art" aria-hidden="true">
+                  <svg viewBox="0 0 240 240" focusable="false">
+                    <defs>
+                      <radialGradient id="boostHalo" cx="50%" cy="42%" r="55%">
+                        <stop offset="0" stop-color="#e11d2e" stop-opacity=".38" />
+                        <stop offset="1" stop-color="#e11d2e" stop-opacity="0" />
+                      </radialGradient>
+                      <linearGradient id="boostLine" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stop-color="#ff5a6a" />
+                        <stop offset="1" stop-color="#8b0f1a" />
+                      </linearGradient>
+                    </defs>
+                    <circle cx="120" cy="100" r="80" fill="url(#boostHalo)" />
+                    <circle cx="120" cy="100" r="58" fill="#0b0b0d" stroke="rgba(245,245,245,.14)" />
+                    <circle cx="120" cy="100" r="70" fill="none" stroke="rgba(225,29,46,.28)" stroke-dasharray="3 8" />
+                    <path d="M128 72l-26 32h16l-8 26 28-33h-16z" fill="url(#boostLine)" stroke="#ff9aa4" stroke-width="1" />
+                    <path d="M120 22l4 8-4 8-4-8z" fill="#e11d2e" />
+                    <path d="M190 100l8 4-8 4-4-4z" fill="rgba(245,245,245,.4)" />
+                    <path d="M50 100l-8 4 8 4 4-4z" fill="rgba(245,245,245,.25)" />
+                    <rect x="40" y="176" width="160" height="42" rx="10" fill="#0a0a0c" stroke="rgba(245,245,245,.1)" />
+                    <text x="52" y="191" fill="#9ca3af" font-size="6.5" letter-spacing="2" font-family="Inter, sans-serif">NIVEAU 3</text>
+                    <rect x="52" y="198" width="136" height="3" rx="1.5" fill="rgba(245,245,245,.08)" />
+                    <rect x="52" y="198" width="136" height="3" rx="1.5" fill="url(#boostLine)" />
+                    <text x="52" y="212" fill="#f5f5f5" font-size="7.5" font-weight="600" letter-spacing="1" font-family="Inter, sans-serif">14 / 14 BOOSTS</text>
+                  </svg>
+                </span>
+              </div>
+            </div>
+            <div class="p-5 pt-2">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <h3 class="product-name">Pack 14 Boosts</h3>
+                  <p class="product-material">Niveau 3 immédiat</p>
+                </div>
+                <p class="price">24,99 €</p>
+              </div>
+              <button class="add-btn" type="button" data-add="Pack 14 Boosts">Ajouter au panier <i data-lucide="plus" aria-hidden="true"></i></button>
+            </div>
+          </article>
+
+          <!-- Produit 2 -->
+          <article class="card product reveal" style="--d:.08s">
+            <div class="p-3">
+              <div class="media media--storefront media--nitro">
+                <span class="tag tag--hot">Populaire</span>
+                <span class="media-ghost">NITRO</span>
+                <span class="media-art" aria-hidden="true">
+                  <svg viewBox="0 0 240 240" focusable="false">
+                    <defs>
+                      <radialGradient id="nitroHalo" cx="50%" cy="45%" r="55%">
+                        <stop offset="0" stop-color="#e11d2e" stop-opacity=".32" />
+                        <stop offset="1" stop-color="#e11d2e" stop-opacity="0" />
+                      </radialGradient>
+                      <linearGradient id="nitroGem" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stop-color="#ff7b88" />
+                        <stop offset="1" stop-color="#c1121f" />
+                      </linearGradient>
+                    </defs>
+                    <circle cx="120" cy="116" r="84" fill="url(#nitroHalo)" />
+                    <rect x="66" y="58" width="108" height="132" rx="14" fill="#0b0b0d" stroke="rgba(245,245,245,.14)" transform="rotate(-7 120 124)" />
+                    <rect x="66" y="58" width="108" height="132" rx="14" fill="none" stroke="rgba(225,29,46,.4)" transform="rotate(6 120 124)" />
+                    <circle cx="120" cy="100" r="28" fill="rgba(225,29,46,.1)" stroke="rgba(225,29,46,.45)" />
+                    <path d="M120 82l16 18-16 18-16-18z" fill="url(#nitroGem)" stroke="#ffb3ba" stroke-width=".8" />
+                    <text x="120" y="148" text-anchor="middle" fill="#f5f5f5" font-size="11" font-weight="700" letter-spacing="3" font-family="'Space Grotesk', sans-serif">NITRO</text>
+                    <text x="120" y="162" text-anchor="middle" fill="#9ca3af" font-size="6" letter-spacing="2" font-family="Inter, sans-serif">1 MOIS</text>
+                    <path d="M78 52l10-10M158 74l10-10M64 150l-8 8" stroke="rgba(245,245,245,.2)" stroke-linecap="round" />
+                  </svg>
+                </span>
+              </div>
+            </div>
+            <div class="p-5 pt-2">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <h3 class="product-name">Nitro 1 mois</h3>
+                  <p class="product-material">Livraison instantanée</p>
+                </div>
+                <p class="price">9,99 €</p>
+              </div>
+              <button class="add-btn" type="button" data-add="Nitro 1 mois">Ajouter au panier <i data-lucide="plus" aria-hidden="true"></i></button>
+            </div>
+          </article>
+
+          <!-- Produit 3 -->
+          <article class="card product reveal" style="--d:.12s">
+            <div class="p-3">
+              <div class="media media--storefront media--bot">
+                <span class="tag tag--hot">Populaire</span>
+                <span class="media-ghost">BOT</span>
+                <span class="media-art" aria-hidden="true">
+                  <svg viewBox="0 0 240 240" focusable="false">
+                    <defs>
+                      <radialGradient id="botHalo" cx="50%" cy="45%" r="55%">
+                        <stop offset="0" stop-color="#e11d2e" stop-opacity=".3" />
+                        <stop offset="1" stop-color="#e11d2e" stop-opacity="0" />
+                      </radialGradient>
+                    </defs>
+                    <circle cx="120" cy="118" r="84" fill="url(#botHalo)" />
+                    <rect x="34" y="58" width="172" height="128" rx="12" fill="#0a0a0c" stroke="rgba(245,245,245,.12)" />
+                    <line x1="34" y1="78" x2="206" y2="78" stroke="rgba(245,245,245,.08)" />
+                    <circle cx="46" cy="68" r="2.4" fill="#e11d2e" />
+                    <circle cx="54" cy="68" r="2.4" fill="rgba(245,245,245,.16)" />
+                    <circle cx="62" cy="68" r="2.4" fill="rgba(245,245,245,.16)" />
+                    <text x="72" y="71" fill="#9ca3af" font-size="5.5" letter-spacing="1.6" font-family="Inter, sans-serif">EGO BOT / TERMINAL</text>
+                    <rect x="46" y="90" width="80" height="22" rx="7" fill="rgba(225,29,46,.12)" stroke="rgba(225,29,46,.32)" />
+                    <circle cx="58" cy="101" r="4.5" fill="#e11d2e" />
+                    <text x="68" y="104" fill="#f5f5f5" font-size="6.5" font-family="Inter, sans-serif">/setup</text>
+                    <rect x="46" y="120" width="122" height="18" rx="6" fill="rgba(245,245,245,.04)" />
+                    <text x="56" y="132" fill="#9ca3af" font-size="5.8" font-family="Inter, sans-serif">&#187; bot connecté au serveur</text>
+                    <rect x="46" y="144" width="104" height="18" rx="6" fill="rgba(245,245,245,.04)" />
+                    <text x="56" y="156" fill="#9ca3af" font-size="5.8" font-family="Inter, sans-serif">&#187; 12 commandes chargées</text>
+                    <text x="158" y="156" fill="#e11d2e" font-size="5.8" font-weight="700" font-family="Inter, sans-serif">OK</text>
+                    <path d="M120 42v-9M120 33l-6 6M120 33l6 6" stroke="rgba(225,29,46,.6)" stroke-linecap="round" />
+                  </svg>
+                </span>
+              </div>
+            </div>
+            <div class="p-5 pt-2">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <h3 class="product-name">Bot sur mesure</h3>
+                  <p class="product-material">Développé pour ton serveur</p>
+                </div>
+                <p class="price">149 €</p>
+              </div>
+              <button class="add-btn" type="button" data-add="Bot sur mesure">Ajouter au panier <i data-lucide="plus" aria-hidden="true"></i></button>
+            </div>
+          </article>
+
+          <!-- Produit 4 -->
+          <article class="card product reveal" style="--d:.04s">
+            <div class="p-3">
+              <div class="media">
+                <span class="tag tag--new">Nouveau</span>
+                <span class="media-ghost">REFONTE</span>
+                <span class="media-art" aria-hidden="true">
+                  <svg viewBox="0 0 240 240" focusable="false">
+                    <defs>
+                      <radialGradient id="refHalo" cx="50%" cy="45%" r="58%">
+                        <stop offset="0" stop-color="#e11d2e" stop-opacity=".3" />
+                        <stop offset="1" stop-color="#e11d2e" stop-opacity="0" />
+                      </radialGradient>
+                    </defs>
+                    <circle cx="120" cy="118" r="86" fill="url(#refHalo)" />
+                    <rect x="34" y="54" width="172" height="134" rx="12" fill="#0a0a0c" stroke="rgba(245,245,245,.12)" />
+                    <path d="M46 54h34v134H46a12 12 0 0 1-12-12V66a12 12 0 0 1 12-12z" fill="rgba(245,245,245,.03)" />
+                    <circle cx="63" cy="70" r="6" fill="rgba(225,29,46,.22)" stroke="rgba(225,29,46,.5)" />
+                    <rect x="56" y="86" width="14" height="3.5" rx="1.75" fill="rgba(245,245,245,.2)" />
+                    <rect x="56" y="96" width="14" height="3.5" rx="1.75" fill="rgba(245,245,245,.1)" />
+                    <rect x="56" y="106" width="14" height="3.5" rx="1.75" fill="rgba(245,245,245,.1)" />
+                    <rect x="94" y="68" width="98" height="32" rx="8" fill="rgba(225,29,46,.12)" stroke="rgba(225,29,46,.35)" />
+                    <text x="106" y="88" fill="#f5f5f5" font-size="7.5" font-weight="600" letter-spacing="1.5" font-family="'Space Grotesk', sans-serif">EGO SERVER</text>
+                    <rect x="94" y="110" width="60" height="4" rx="2" fill="rgba(245,245,245,.16)" />
+                    <rect x="94" y="122" width="78" height="4" rx="2" fill="rgba(245,245,245,.1)" />
+                    <rect x="94" y="134" width="48" height="4" rx="2" fill="rgba(245,245,245,.1)" />
+                    <rect x="94" y="150" width="19" height="6" rx="3" fill="#e11d2e" />
+                    <rect x="118" y="150" width="19" height="6" rx="3" fill="#f5f5f5" fill-opacity=".7" />
+                    <rect x="142" y="150" width="19" height="6" rx="3" fill="#2a2a2c" />
+                    <rect x="166" y="150" width="19" height="6" rx="3" fill="#8b0f1a" />
+                  </svg>
+                </span>
+              </div>
+            </div>
+            <div class="p-5 pt-2">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <h3 class="product-name">Refonte de serveur</h3>
+                  <p class="product-material">Design, rôles et structure</p>
+                </div>
+                <p class="price">89 €</p>
+              </div>
+              <button class="add-btn" type="button" data-add="Refonte de serveur">Ajouter au panier <i data-lucide="plus" aria-hidden="true"></i></button>
+            </div>
+          </article>
+
+          <!-- Produit 5 -->
+          <article class="card product reveal" style="--d:.08s">
+            <div class="p-3">
+              <div class="media">
+                <span class="tag tag--limited">Offre limitée</span>
+                <span class="media-ghost">MOD</span>
+                <span class="media-art" aria-hidden="true">
+                  <svg viewBox="0 0 240 240" focusable="false">
+                    <defs>
+                      <radialGradient id="modHalo" cx="50%" cy="42%" r="58%">
+                        <stop offset="0" stop-color="#e11d2e" stop-opacity=".34" />
+                        <stop offset="1" stop-color="#e11d2e" stop-opacity="0" />
+                      </radialGradient>
+                      <linearGradient id="modShield" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stop-color="#ff5a6a" />
+                        <stop offset="1" stop-color="#8b0f1a" />
+                      </linearGradient>
+                    </defs>
+                    <circle cx="120" cy="110" r="84" fill="url(#modHalo)" />
+                    <path d="M120 40l52 20v42c0 34-21 57-52 72-31-15-52-38-52-72V60z" fill="rgba(225,29,46,.06)" stroke="url(#modShield)" stroke-width="1.6" />
+                    <path d="M98 112l16 16 30-34" fill="none" stroke="#ff5a6a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+                    <rect x="48" y="182" width="144" height="34" rx="8" fill="#0a0a0c" stroke="rgba(245,245,245,.1)" />
+                    <circle cx="62" cy="199" r="3" fill="#e11d2e" />
+                    <text x="72" y="202" fill="#9ca3af" font-size="6" font-family="Inter, sans-serif">anti-raid activé</text>
+                    <rect x="150" y="193" width="26" height="12" rx="6" fill="rgba(225,29,46,.45)" />
+                    <circle cx="170" cy="199" r="4.5" fill="#f5f5f5" />
+                  </svg>
+                </span>
+              </div>
+            </div>
+            <div class="p-5 pt-2">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <h3 class="product-name">Pack modération</h3>
+                  <p class="product-material">Anti-raid, logs et alertes</p>
+                </div>
+                <p class="price">59 €</p>
+              </div>
+              <button class="add-btn" type="button" data-add="Pack modération">Ajouter au panier <i data-lucide="plus" aria-hidden="true"></i></button>
+            </div>
+          </article>
+
+          <!-- Produit 6 -->
+          <article class="card product reveal" style="--d:.12s">
+            <div class="p-3">
+              <div class="media">
+                <span class="tag tag--limited">Offre limitée</span>
+                <span class="media-ghost">GROWTH</span>
+                <span class="media-art" aria-hidden="true">
+                  <svg viewBox="0 0 240 240" focusable="false">
+                    <defs>
+                      <radialGradient id="growthHalo" cx="50%" cy="45%" r="58%">
+                        <stop offset="0" stop-color="#e11d2e" stop-opacity=".3" />
+                        <stop offset="1" stop-color="#e11d2e" stop-opacity="0" />
+                      </radialGradient>
+                      <linearGradient id="growthArea" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0" stop-color="#e11d2e" stop-opacity=".45" />
+                        <stop offset="1" stop-color="#e11d2e" stop-opacity="0" />
+                      </linearGradient>
+                    </defs>
+                    <circle cx="120" cy="112" r="86" fill="url(#growthHalo)" />
+                    <rect x="34" y="56" width="172" height="130" rx="12" fill="#0a0a0c" stroke="rgba(245,245,245,.1)" />
+                    <line x1="48" y1="94" x2="192" y2="94" stroke="rgba(245,245,245,.05)" />
+                    <line x1="48" y1="122" x2="192" y2="122" stroke="rgba(245,245,245,.05)" />
+                    <line x1="48" y1="150" x2="192" y2="150" stroke="rgba(245,245,245,.05)" />
+                    <text x="48" y="78" fill="#9ca3af" font-size="6" letter-spacing="2" font-family="Inter, sans-serif">CROISSANCE</text>
+                    <path d="M48 162l28-18 28 8 30-26 28 9 30-28v59H48z" fill="url(#growthArea)" />
+                    <path d="M48 162l28-18 28 8 30-26 28 9 30-28" fill="none" stroke="#ff5a6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <circle cx="76" cy="144" r="2.5" fill="#ff9aa4" />
+                    <circle cx="104" cy="152" r="2.5" fill="#ff9aa4" />
+                    <circle cx="164" cy="107" r="2.5" fill="#ff9aa4" />
+                    <circle cx="192" cy="79" r="3.2" fill="#f5f5f5" />
+                    <rect x="140" y="64" width="52" height="20" rx="6" fill="rgba(225,29,46,.16)" stroke="rgba(225,29,46,.4)" />
+                    <text x="166" y="77.5" text-anchor="middle" fill="#ffd7db" font-size="7" font-weight="700" font-family="Inter, sans-serif">+128 %</text>
+                  </svg>
+                </span>
+              </div>
+            </div>
+            <div class="p-5 pt-2">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <h3 class="product-name">Pack croissance</h3>
+                  <p class="product-material">Événements et giveaways</p>
+                </div>
+                <p class="price">79 €</p>
+              </div>
+              <button class="add-btn" type="button" data-add="Pack croissance">Ajouter au panier <i data-lucide="plus" aria-hidden="true"></i></button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         La marque : valeurs et univers visuel
+         ============================================================ -->
+    <section id="apropos" class="border-t border-white/5 py-20 md:py-28">
+      <div class="container-x">
+        <div class="grid gap-12 lg:grid-cols-2 lg:items-center">
+          <div class="reveal">
+            <span class="eyebrow">L’approche EGO</span>
+            <h2 class="h2 mt-4">Plus qu’un service.<br />Une attitude.</h2>
+            <p class="mt-5 leading-relaxed text-ash">
+              EGO Market centralise les services Discord dont les serveurs ont vraiment besoin : boosts, Nitro,
+              bots sur mesure, refonte et sécurité. Une seule plateforme, des livraisons rapides et des prix lisibles.
+            </p>
+            <p class="mt-3 leading-relaxed text-ash">
+              Pas de vendeurs interchangeables ni de promesses floues. Chaque commande est suivie dans un ticket
+              privé, avec une garantie de 30 jours.
+            </p>
+
+            <ul class="mt-8 space-y-5">
+              <li class="flex gap-4">
+                <span class="adv-icon shrink-0"><i data-lucide="badge-check" aria-hidden="true"></i></span>
+                <div>
+                  <h3 class="font-display text-base font-semibold">Qualité</h3>
+                  <p class="mt-1 text-sm leading-relaxed text-ash">Services testés, livrés proprement et vérifiés avant chaque envoi.</p>
+                </div>
+              </li>
+              <li class="flex gap-4">
+                <span class="adv-icon shrink-0"><i data-lucide="fingerprint" aria-hidden="true"></i></span>
+                <div>
+                  <h3 class="font-display text-base font-semibold">Originalité</h3>
+                  <p class="mt-1 text-sm leading-relaxed text-ash">Chaque bot et chaque refonte est conçu pour ton serveur, jamais recopié.</p>
+                </div>
+              </li>
+              <li class="flex gap-4">
+                <span class="adv-icon shrink-0"><i data-lucide="users" aria-hidden="true"></i></span>
+                <div>
+                  <h3 class="font-display text-base font-semibold">Communauté</h3>
+                  <p class="mt-1 text-sm leading-relaxed text-ash">Un Discord actif pour suivre les restocks, poser tes questions et partager tes setups.</p>
+                </div>
+              </li>
+            </ul>
+
+            <!-- Point d’entrée vers le cercle EGO sur Discord -->
+            <a href="#newsletter" class="discord-card">
+              <span class="adv-icon shrink-0"><i data-lucide="messages-square" aria-hidden="true"></i></span>
+              <span>
+                <strong>Le cercle EGO</strong>
+                <span>Restocks, offres privées et support en direct sur notre Discord.</span>
+              </span>
+              <i data-lucide="arrow-right" aria-hidden="true"></i>
+            </a>
+          </div>
+
+          <!-- Visuel abstrait, purement décoratif -->
+          <div class="brand-visual reveal" style="--d:.12s" aria-hidden="true">
+            <div class="brand-ring"></div>
+            <span class="brand-word">EGO</span>
+            <span class="brand-chip brand-chip--tl">Depuis 2024</span>
+            <span class="brand-chip brand-chip--tr">Restock live</span>
+            <span class="brand-chip brand-chip--br">Support 24/7</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         Avis clients : preuve sociale
+         ============================================================ -->
+    <section id="avis" class="border-t border-white/5 py-20 md:py-28">
+      <div class="container-x">
+        <div class="reveal max-w-2xl">
+          <span class="eyebrow">Avis clients</span>
+          <h2 class="h2 mt-4">Ils boostent avec EGO</h2>
+          <p class="mt-4 leading-relaxed text-ash">Des serveurs de toutes tailles, des besoins différents, la même exigence de résultat.</p>
+        </div>
+
+        <div class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <figure class="card reveal p-6" style="--d:.04s">
+            <div class="flex items-center justify-between gap-3">
+              <span class="stars" role="img" aria-label="Note : 5 étoiles sur 5">★★★★★</span>
+              <span class="verified"><i data-lucide="badge-check" aria-hidden="true"></i>Commande vérifiée</span>
+            </div>
+            <blockquote class="mt-4">
+              <p class="text-sm leading-relaxed text-[#d1d5db]">“Le pack de boosts est arrivé en moins de dix minutes. Niveau 3 direct, sans prise de tête.”</p>
+            </blockquote>
+            <figcaption class="mt-5 flex items-center gap-3 border-t border-white/5 pt-4">
+              <span class="avatar" aria-hidden="true">MR</span>
+              <span class="flex flex-col">
+                <span class="font-display text-sm font-semibold">Maya R.</span>
+                <span class="text-xs text-ash">Paris</span>
+              </span>
+            </figcaption>
+          </figure>
+
+          <figure class="card reveal p-6" style="--d:.08s">
+            <div class="flex items-center justify-between gap-3">
+              <span class="stars" role="img" aria-label="Note : 5 étoiles sur 5">★★★★★</span>
+              <span class="verified"><i data-lucide="badge-check" aria-hidden="true"></i>Commande vérifiée</span>
+            </div>
+            <blockquote class="mt-4">
+              <p class="text-sm leading-relaxed text-[#d1d5db]">“Refonte complète de notre serveur en 48 h. Le rendu est propre, cohérent et vraiment à nous.”</p>
+            </blockquote>
+            <figcaption class="mt-5 flex items-center gap-3 border-t border-white/5 pt-4">
+              <span class="avatar" aria-hidden="true">YB</span>
+              <span class="flex flex-col">
+                <span class="font-display text-sm font-semibold">Yanis B.</span>
+                <span class="text-xs text-ash">Lyon</span>
+              </span>
+            </figcaption>
+          </figure>
+
+          <figure class="card reveal p-6" style="--d:.12s">
+            <div class="flex items-center justify-between gap-3">
+              <span class="stars" role="img" aria-label="Note : 5 étoiles sur 5">★★★★★</span>
+              <span class="verified"><i data-lucide="badge-check" aria-hidden="true"></i>Commande vérifiée</span>
+            </div>
+            <blockquote class="mt-4">
+              <p class="text-sm leading-relaxed text-[#d1d5db]">“Notre bot de modération tourne depuis trois mois sans une seule coupure.”</p>
+            </blockquote>
+            <figcaption class="mt-5 flex items-center gap-3 border-t border-white/5 pt-4">
+              <span class="avatar" aria-hidden="true">SM</span>
+              <span class="flex flex-col">
+                <span class="font-display text-sm font-semibold">Sofia M.</span>
+                <span class="text-xs text-ash">Marseille</span>
+              </span>
+            </figcaption>
+          </figure>
+
+          <figure class="card reveal p-6" style="--d:.04s">
+            <div class="flex items-center justify-between gap-3">
+              <span class="stars" role="img" aria-label="Note : 5 étoiles sur 5">★★★★★</span>
+              <span class="verified"><i data-lucide="badge-check" aria-hidden="true"></i>Commande vérifiée</span>
+            </div>
+            <blockquote class="mt-4">
+              <p class="text-sm leading-relaxed text-[#d1d5db]">“Notre pack sécurité a calmé les raids en une soirée. Les logs sont clairs et exploitables.”</p>
+            </blockquote>
+            <figcaption class="mt-5 flex items-center gap-3 border-t border-white/5 pt-4">
+              <span class="avatar" aria-hidden="true">LF</span>
+              <span class="flex flex-col">
+                <span class="font-display text-sm font-semibold">Lucas F.</span>
+                <span class="text-xs text-ash">Bordeaux</span>
+              </span>
+            </figcaption>
+          </figure>
+
+          <figure class="card reveal p-6" style="--d:.08s">
+            <div class="flex items-center justify-between gap-3">
+              <span class="stars" role="img" aria-label="Note : 5 étoiles sur 5">★★★★★</span>
+              <span class="verified"><i data-lucide="badge-check" aria-hidden="true"></i>Commande vérifiée</span>
+            </div>
+            <blockquote class="mt-4">
+              <p class="text-sm leading-relaxed text-[#d1d5db]">“Les giveaways et les événements ont doublé notre activité le week-end.”</p>
+            </blockquote>
+            <figcaption class="mt-5 flex items-center gap-3 border-t border-white/5 pt-4">
+              <span class="avatar" aria-hidden="true">IK</span>
+              <span class="flex flex-col">
+                <span class="font-display text-sm font-semibold">Inès K.</span>
+                <span class="text-xs text-ash">Lille</span>
+              </span>
+            </figcaption>
+          </figure>
+
+          <figure class="card reveal p-6" style="--d:.12s">
+            <div class="flex items-center justify-between gap-3">
+              <span class="stars" role="img" aria-label="Note : 5 étoiles sur 5">★★★★★</span>
+              <span class="verified"><i data-lucide="badge-check" aria-hidden="true"></i>Commande vérifiée</span>
+            </div>
+            <blockquote class="mt-4">
+              <p class="text-sm leading-relaxed text-[#d1d5db]">“Paiement simple, livraison rapide, support présent. Trois commandes, zéro déception.”</p>
+            </blockquote>
+            <figcaption class="mt-5 flex items-center gap-3 border-t border-white/5 pt-4">
+              <span class="avatar" aria-hidden="true">TD</span>
+              <span class="flex flex-col">
+                <span class="font-display text-sm font-semibold">Théo D.</span>
+                <span class="text-xs text-ash">Nantes</span>
+              </span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         Avantages : réassurance e-commerce
+         ============================================================ -->
+    <section class="border-t border-white/5 py-20 md:py-24">
+      <div class="container-x">
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <article class="card reveal p-6" style="--d:.04s">
+            <span class="adv-icon"><i data-lucide="truck" aria-hidden="true"></i></span>
+            <h3 class="mt-5 font-display text-base font-semibold">Livraison instantanée</h3>
+            <p class="mt-2 text-sm leading-relaxed text-ash">La plupart des commandes partent en moins de 15 minutes.</p>
+          </article>
+
+          <article class="card reveal p-6" style="--d:.08s">
+            <span class="adv-icon"><i data-lucide="shield-check" aria-hidden="true"></i></span>
+            <h3 class="mt-5 font-display text-base font-semibold">Paiement sécurisé</h3>
+            <p class="mt-2 text-sm leading-relaxed text-ash">CB, PayPal ou crypto : transactions chiffrées et 3D Secure.</p>
+          </article>
+
+          <article class="card reveal p-6" style="--d:.12s">
+            <span class="adv-icon"><i data-lucide="rotate-ccw" aria-hidden="true"></i></span>
+            <h3 class="mt-5 font-display text-base font-semibold">Garantie 30 jours</h3>
+            <p class="mt-2 text-sm leading-relaxed text-ash">Service non conforme ? On reprend ou on rembourse.</p>
+          </article>
+
+          <article class="card reveal p-6" style="--d:.16s">
+            <span class="adv-icon"><i data-lucide="headphones" aria-hidden="true"></i></span>
+            <h3 class="mt-5 font-display text-base font-semibold">Support 7j/7</h3>
+            <p class="mt-2 text-sm leading-relaxed text-ash">Une équipe présente sur Discord, tous les jours.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         FAQ : accordéon accessible (un seul volet ouvert)
+         ============================================================ -->
+    <section id="faq" class="border-t border-white/5 py-20 md:py-28">
+      <div class="container-x">
+        <div class="reveal mx-auto max-w-2xl text-center">
+          <span class="eyebrow">FAQ</span>
+          <h2 class="h2 mt-4">Questions, réponses</h2>
+          <p class="mt-4 leading-relaxed text-ash">Tout ce qu’il faut savoir avant de commander un service chez EGO Market.</p>
+        </div>
+
+        <div class="mx-auto mt-10 max-w-3xl space-y-3">
+          <div class="faq-item reveal">
+            <h3>
+              <button class="faq-trigger" type="button" id="faq-1-trigger" aria-expanded="false" aria-controls="faq-1">
+                <span>Quels sont les délais de livraison ?</span>
+                <span class="faq-icon"><i data-lucide="plus" aria-hidden="true"></i></span>
+              </button>
+            </h3>
+            <div class="faq-panel" id="faq-1" role="region" aria-labelledby="faq-1-trigger">
+              <p>La majorité des commandes (boosts, Nitro) est livrée en moins de 15 minutes. Les bots sur mesure et les refontes demandent 48 à 72 h. Un ticket de suivi s’ouvre dès le paiement.</p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal" style="--d:.04s">
+            <h3>
+              <button class="faq-trigger" type="button" id="faq-2-trigger" aria-expanded="false" aria-controls="faq-2">
+                <span>Puis-je être remboursé ?</span>
+                <span class="faq-icon"><i data-lucide="plus" aria-hidden="true"></i></span>
+              </button>
+            </h3>
+            <div class="faq-panel" id="faq-2" role="region" aria-labelledby="faq-2-trigger">
+              <p>Oui. Chaque prestation est couverte par une garantie de 30 jours : si le service ne fonctionne pas comme annoncé, il est repris ou remboursé.</p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal" style="--d:.08s">
+            <h3>
+              <button class="faq-trigger" type="button" id="faq-3-trigger" aria-expanded="false" aria-controls="faq-3">
+                <span>Quels moyens de paiement acceptez-vous ?</span>
+                <span class="faq-icon"><i data-lucide="plus" aria-hidden="true"></i></span>
+              </button>
+            </h3>
+            <div class="faq-panel" id="faq-3" role="region" aria-labelledby="faq-3-trigger">
+              <p>Carte bancaire, PayPal, Apple Pay, Google Pay et crypto (BTC, ETH, USDT). Le paiement en 3 fois est disponible dès 80 €.</p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal" style="--d:.12s">
+            <h3>
+              <button class="faq-trigger" type="button" id="faq-4-trigger" aria-expanded="false" aria-controls="faq-4">
+                <span>Comment suivre ma commande ?</span>
+                <span class="faq-icon"><i data-lucide="plus" aria-hidden="true"></i></span>
+              </button>
+            </h3>
+            <div class="faq-panel" id="faq-4" role="region" aria-labelledby="faq-4-trigger">
+              <p>Un ticket privé est ouvert sur notre Discord dès la commande : livraison, preuves et suivi y sont centralisés. Une confirmation part aussi par e-mail.</p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal" style="--d:.16s">
+            <h3>
+              <button class="faq-trigger" type="button" id="faq-5-trigger" aria-expanded="false" aria-controls="faq-5">
+                <span>Proposez-vous des services sur mesure ?</span>
+                <span class="faq-icon"><i data-lucide="plus" aria-hidden="true"></i></span>
+              </button>
+            </h3>
+            <div class="faq-panel" id="faq-5" role="region" aria-labelledby="faq-5-trigger">
+              <p>Oui. Bots spécifiques, refontes complètes, automatisations et intégrations : décris ton besoin et tu reçois un devis sous 24 h.</p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal" style="--d:.2s">
+            <h3>
+              <button class="faq-trigger" type="button" id="faq-6-trigger" aria-expanded="false" aria-controls="faq-6">
+                <span>Comment contacter le support ?</span>
+                <span class="faq-icon"><i data-lucide="plus" aria-hidden="true"></i></span>
+              </button>
+            </h3>
+            <div class="faq-panel" id="faq-6" role="region" aria-labelledby="faq-6-trigger">
+              <p>Sur notre Discord en priorité, ou par e-mail à contact@egomarket.example. Réponse sous 24 h, 7 jours sur 7.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         Newsletter : capture d'e-mail
+         ============================================================ -->
+    <section id="newsletter" class="border-t border-white/5 py-20 md:py-24">
+      <div class="container-x">
+        <div class="newsletter-card reveal">
+          <div class="max-w-2xl">
+            <span class="eyebrow">Le mouvement</span>
+            <h2 class="h2 mt-4">Rejoins le mouvement EGO</h2>
+            <p class="mt-4 leading-relaxed text-ash">Recevez les restocks, les offres privées et les nouveaux services en avant-première.</p>
+          </div>
+
+          <form id="newsletter-form" class="newsletter-form" novalidate>
+            <label class="sr-only" for="email">Adresse e-mail</label>
+            <input class="newsletter-input" id="email" name="email" type="email" autocomplete="email" placeholder="ton@email.com" required />
+            <button class="btn btn-primary" type="submit">S’inscrire <i data-lucide="arrow-right" aria-hidden="true"></i></button>
+          </form>
+          <p id="newsletter-status" class="form-status" role="status" aria-live="polite"></p>
+          <p class="mt-1 text-xs text-ash">Pas de spam. Désinscription en un clic.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         Appel à l'action final
+         ============================================================ -->
+    <section class="final-cta py-20 md:py-28">
+      <div class="container-x text-center">
+        <h2 class="mx-auto max-w-3xl font-display text-[clamp(2.2rem,5vw,4rem)] font-bold leading-[1.02] tracking-[-0.04em]">Prêt à faire passer ton serveur au niveau supérieur ?</h2>
+        <p class="mx-auto mt-4 max-w-xl text-white/70">Boosts, bots ou refonte complète : ton serveur mérite mieux qu’un setup improvisé.</p>
+        <a href="#boutique" class="btn btn-primary mt-8">Explorer les services <i data-lucide="arrow-right" aria-hidden="true"></i></a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================================================
+       Pied de page
+       ============================================================ -->
+  <footer id="contact" class="site-footer">
+    <div class="container-x">
+      <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-6">
+        <div class="lg:col-span-2">
+          <a href="#accueil" class="logo" aria-label="EGO Market">EGO <span>MARKET</span></a>
+          <p class="mt-4 max-w-xs text-sm leading-relaxed text-ash">
+            Boosts, Nitro, bots et refontes : les services Discord essentiels, centralisés sur une seule plateforme.
+          </p>
+          <a href="mailto:contact@egomarket.example" class="footer-link mt-4 inline-block">contact@egomarket.example</a>
+        </div>
+
+        <div>
+          <h3 class="footer-title">Services</h3>
+          <ul class="space-y-2.5">
+            <li><a class="footer-link" href="#boutique">Pack Boosts</a></li>
+            <li><a class="footer-link" href="#boutique">Nitro</a></li>
+            <li><a class="footer-link" href="#boutique">Bots sur mesure</a></li>
+            <li><a class="footer-link" href="#collections">Refonte de serveur</a></li>
+            <li><a class="footer-link" href="#collections">Sécurité</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer-title">Aide</h3>
+          <ul class="space-y-2.5">
+            <li><a class="footer-link" href="#faq">Livraison</a></li>
+            <li><a class="footer-link" href="#faq">Garantie</a></li>
+            <li><a class="footer-link" href="#faq">Suivi de commande</a></li>
+            <li><a class="footer-link" href="#faq">FAQ</a></li>
+            <li><a class="footer-link" href="mailto:contact@egomarket.example">Contact</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer-title">Informations</h3>
+          <ul class="space-y-2.5">
+            <li><a class="footer-link" href="#apropos">À propos</a></li>
+            <li><a class="footer-link" href="#">CGV</a></li>
+            <li><a class="footer-link" href="#">Confidentialité</a></li>
+            <li><a class="footer-link" href="#">Mentions légales</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer-title">Réseaux sociaux</h3>
+          <ul class="space-y-2.5">
+            <li><a class="footer-link" href="https://www.instagram.com" target="_blank" rel="noreferrer">Instagram</a></li>
+            <li><a class="footer-link" href="https://www.tiktok.com" target="_blank" rel="noreferrer">TikTok</a></li>
+            <li><a class="footer-link" href="https://x.com" target="_blank" rel="noreferrer">X</a></li>
+            <li><a class="footer-link" href="#newsletter">Discord</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-12 flex flex-col gap-3 border-t border-white/5 pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <p class="text-xs text-ash">© 2026 EGO Market. Tous droits réservés.</p>
+        <p class="text-xs text-ash">Conçu à Paris. Pensé pour ceux qui assument.</p>
+      </div>
+      <p class="mt-6 text-[0.68rem] leading-relaxed" style="color:rgba(156,163,175,.65)">
+        EGO Market est un service indépendant, non affilié à Discord Inc. Les marques citées appartiennent à leurs propriétaires respectifs.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Notification discrète pour le panier et les messages -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Icônes Lucide via CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    // ============================================================
+    // EGO MARKET — interactions (aucune dépendance en dehors des CDN)
+    // ============================================================
+
+    // --- Icônes Lucide ---
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+
+    // --- Vidéo hero : relance quand l'onglet redevient visible ---
+    const heroVideo = document.querySelector('.hero-media video');
+    if (heroVideo) {
+      const playHeroVideo = () => heroVideo.play().catch(() => {});
+      playHeroVideo();
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) playHeroVideo();
+      });
+    }
+
+    // --- En-tête plus dense au défilement ---
+    const header = document.getElementById('site-header');
+    if (header) {
+      const syncHeader = () => header.classList.toggle('is-scrolled', window.scrollY > 12);
+      syncHeader();
+      window.addEventListener('scroll', syncHeader, { passive: true });
+    }
+
+    // --- Menu mobile accessible ---
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (menuToggle && mobileMenu) {
+      const setMenu = (open) => {
+        menuToggle.setAttribute('aria-expanded', String(open));
+        menuToggle.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+        menuToggle.classList.toggle('menu-open', open);
+        mobileMenu.classList.toggle('is-open', open);
+      };
+      menuToggle.addEventListener('click', () => {
+        setMenu(menuToggle.getAttribute('aria-expanded') !== 'true');
+      });
+      mobileMenu.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => setMenu(false));
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') setMenu(false);
+      });
+    }
+
+    // --- Panier fictif : compteur et notification ---
+    const toast = document.getElementById('toast');
+    let toastTimer;
+    function showToast(message) {
+      if (!toast) return;
+      toast.textContent = message;
+      toast.classList.add('is-visible');
+      clearTimeout(toastTimer);
+      toastTimer = window.setTimeout(() => toast.classList.remove('is-visible'), 2600);
+    }
+
+    const cartButton = document.getElementById('cart-button');
+    const cartCounts = document.querySelectorAll('[data-cart-count]');
+    let cartCount = 0;
+    const syncCart = () => {
+      cartCounts.forEach((element) => { element.textContent = String(cartCount); });
+      if (cartButton) {
+        cartButton.setAttribute('aria-label', 'Panier, ' + cartCount + ' article' + (cartCount > 1 ? 's' : ''));
+      }
+    };
+
+    document.querySelectorAll('[data-add]').forEach((button) => {
+      button.addEventListener('click', () => {
+        cartCount += 1;
+        syncCart();
+        showToast(button.getAttribute('data-add') + ' ajouté au panier');
+      });
+    });
+
+    if (cartButton) {
+      cartButton.addEventListener('click', () => {
+        if (cartCount === 0) {
+          showToast('Ton panier est vide pour le moment.');
+        } else {
+          showToast('Ton panier contient ' + cartCount + ' article' + (cartCount > 1 ? 's' : '') + '.');
+        }
+      });
+    }
+    syncCart();
+
+    // --- Accordéon FAQ : un seul volet ouvert à la fois ---
+    const faqItems = Array.from(document.querySelectorAll('.faq-item'));
+    faqItems.forEach((item) => {
+      const trigger = item.querySelector('.faq-trigger');
+      const panel = item.querySelector('.faq-panel');
+      if (!trigger || !panel) return;
+
+      // Un volet fermé sort de l'arbre d'accessibilité et du parcours clavier
+      panel.setAttribute('aria-hidden', 'true');
+
+      trigger.addEventListener('click', () => {
+        const wasOpen = item.classList.contains('is-open');
+
+        faqItems.forEach((other) => {
+          other.classList.remove('is-open');
+          const otherTrigger = other.querySelector('.faq-trigger');
+          const otherPanel = other.querySelector('.faq-panel');
+          if (otherTrigger) otherTrigger.setAttribute('aria-expanded', 'false');
+          if (otherPanel) {
+            otherPanel.style.maxHeight = '';
+            otherPanel.setAttribute('aria-hidden', 'true');
+          }
+        });
+
+        if (!wasOpen) {
+          item.classList.add('is-open');
+          trigger.setAttribute('aria-expanded', 'true');
+          panel.setAttribute('aria-hidden', 'false');
+          panel.style.maxHeight = panel.scrollHeight + 'px';
+        }
+      });
+    });
+
+    // Recalcule la hauteur du volet ouvert quand la fenêtre change de taille
+    window.addEventListener('resize', () => {
+      document.querySelectorAll('.faq-item.is-open .faq-panel').forEach((panel) => {
+        panel.style.maxHeight = panel.scrollHeight + 'px';
+      });
+    });
+
+    // --- Apparition des sections au défilement ---
+    const reveals = Array.from(document.querySelectorAll('.reveal'));
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+      reveals.forEach((element) => element.classList.add('is-visible'));
+    } else {
+      const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      reveals.forEach((element) => revealObserver.observe(element));
+    }
+
+    // --- Newsletter (démo front-end, aucune donnée envoyée) ---
+    const newsletterForm = document.getElementById('newsletter-form');
+    const newsletterStatus = document.getElementById('newsletter-status');
+    if (newsletterForm && newsletterStatus) {
+      newsletterForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const input = newsletterForm.querySelector('input[type="email"]');
+        const value = input ? input.value.trim() : '';
+
+        if (!input || !value || !input.checkValidity()) {
+          newsletterStatus.textContent = 'Entre une adresse e-mail valide pour rejoindre le mouvement.';
+          newsletterStatus.classList.add('is-error');
+          if (input) input.focus();
+          return;
+        }
+
+        newsletterStatus.classList.remove('is-error');
+        newsletterStatus.textContent = 'Bienvenue dans le mouvement EGO. Vérifie ta boîte mail pour confirmer.';
+        newsletterForm.reset();
+      });
+    }
+
+    // --- Particules rouges du héros (canvas léger) ---
+    const canvas = document.getElementById('hero-particles');
+    if (canvas && canvas.getContext) {
+      const context = canvas.getContext('2d');
+      const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let width = 0;
+      let height = 0;
+      let dots = [];
+      let frameId = 0;
+
+      const buildDots = () => {
+        const count = Math.max(16, Math.min(54, Math.floor(width / 26)));
+        dots = Array.from({ length: count }, () => ({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.22,
+          vy: (Math.random() - 0.5) * 0.22,
+          radius: Math.random() * 1.5 + 0.5,
+          alpha: Math.random() * 0.45 + 0.2,
+        }));
+      };
+
+      const resizeCanvas = () => {
+        const rect = canvas.getBoundingClientRect();
+        const ratio = Math.min(window.devicePixelRatio || 1, 2);
+        width = rect.width;
+        height = rect.height;
+        canvas.width = Math.floor(width * ratio);
+        canvas.height = Math.floor(height * ratio);
+        context.setTransform(ratio, 0, 0, ratio, 0, 0);
+        buildDots();
+        drawFrame(false);
+      };
+
+      const drawFrame = (animate) => {
+        context.clearRect(0, 0, width, height);
+
+        dots.forEach((dot, index) => {
+          if (animate) {
+            dot.x += dot.vx;
+            dot.y += dot.vy;
+            if (dot.x < -12) dot.x = width + 12;
+            if (dot.x > width + 12) dot.x = -12;
+            if (dot.y < -12) dot.y = height + 12;
+            if (dot.y > height + 12) dot.y = -12;
+          }
+
+          context.beginPath();
+          context.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
+          context.fillStyle = 'rgba(225, 29, 46, ' + dot.alpha + ')';
+          context.fill();
+
+          for (let j = index + 1; j < dots.length; j += 1) {
+            const other = dots[j];
+            const dx = dot.x - other.x;
+            const dy = dot.y - other.y;
+            const distance = Math.hypot(dx, dy);
+            if (distance < 120) {
+              context.beginPath();
+              context.moveTo(dot.x, dot.y);
+              context.lineTo(other.x, other.y);
+              context.strokeStyle = 'rgba(225, 29, 46, ' + 0.1 * (1 - distance / 120) + ')';
+              context.lineWidth = 0.6;
+              context.stroke();
+            }
+          }
+        });
+      };
+
+      const loop = () => {
+        drawFrame(true);
+        frameId = window.requestAnimationFrame(loop);
+      };
+
+      resizeCanvas();
+      if (!motionQuery.matches) loop();
+
+      window.addEventListener('resize', () => {
+        window.cancelAnimationFrame(frameId);
+        resizeCanvas();
+        if (!motionQuery.matches) loop();
+      });
+    }
+  </script>
+</body>
+</html>

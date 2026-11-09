@@ -1,0 +1,19 @@
+# Copier ce fichier en `.dev.vars` (ignoré par git) puis renseigner les valeurs
+# de l'application REST PayPal du compte EGOMarket265.
+# Tableau de bord : https://developer.paypal.com/dashboard/applications
+PAYPAL_CLIENT_ID=
+PAYPAL_CLIENT_SECRET=
+# Webhook Live à déclarer : https://<domaine>/api/payments/paypal
+# Événement : PAYMENT.CAPTURE.COMPLETED — coller ici son identifiant (Webhook ID).
+PAYPAL_WEBHOOK_ID=
+# `live` pour encaisser réellement ; `sandbox` pour les tests.
+PAYPAL_ENV=live
+
+# Compte PayPal.Me utilisé seulement si les identifiants API sont absents.
+PAYPAL_ME_HANDLE=EGOMarket265
+
+# Jeton de l'API admin (enregistrement manuel d'une commande PayPal.Me).
+# ADMIN_TOKEN=
+
+# Sel des empreintes d'e-mail : une valeur aléatoire longue en production.
+# REVIEW_SALT=
