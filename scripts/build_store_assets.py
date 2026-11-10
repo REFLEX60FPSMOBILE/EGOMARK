@@ -1,4 +1,7 @@
+from datetime import datetime, timezone
+import hashlib
 import io
+import json
 import os
 import re
 import shutil
@@ -11,6 +14,27 @@ MAX_WIDTH = 800
 QUALITY = 78
 LIMIT_BYTES = 10 * 1024 * 1024
 LIMIT_FILES = 1000
+
+
+def text_digest(directory):
+    """Empreinte stable du build : HTML/CSS/JS servis et bundle Worker."""
+    digest = hashlib.sha256()
+    for dirpath, _, filenames in os.walk(directory):
+        for name in sorted(filenames):
+            if not name.lower().endswith(('.html', '.css', '.js')):
+                continue
+            path = os.path.join(dirpath, name)
+            rel = os.path.relpath(path, directory).replace(os.sep, '/')
+            digest.update(rel.encode('utf-8'))
+            digest.update(b'\0')
+            with open(path, 'rb') as handle:
+                digest.update(hashlib.sha256(handle.read()).digest())
+    worker = os.path.join('dist', 'storefront', 'index.js')
+    if os.path.exists(worker):
+        digest.update(b'worker/index.js\0')
+        with open(worker, 'rb') as handle:
+            digest.update(hashlib.sha256(handle.read()).digest())
+    return digest.hexdigest()[:16]
 
 files = {}
 for dp, _, fns in os.walk(SRC):
@@ -68,6 +92,19 @@ for rel in sorted(refs):
         shutil.copy2(p, dest)
         copied += 1
 
+build_id = text_digest(OUT)
+with open(os.path.join(OUT, 'build.json'), 'w', encoding='utf-8') as handle:
+    json.dump(
+        {
+            'buildId': build_id,
+            'generatedAt': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+        },
+        handle,
+        ensure_ascii=False,
+        indent=2,
+    )
+    handle.write('\n')
+
 total = 0
 count = 0
 for dp, _, fns in os.walk(OUT):
@@ -84,6 +121,8 @@ print(
     encoded,
     '| copies:',
     copied,
+    '| build:',
+    build_id,
 )
 if count > LIMIT_FILES or total > LIMIT_BYTES:
     print('DEPASSE LA LIMITE Sites (1000 fichiers / 10 MiB)')

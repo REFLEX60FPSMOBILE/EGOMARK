@@ -26,6 +26,83 @@ bun run build      # dist/client (assets) + dist/saas_landing/index.js (Worker)
 - `src/worker/index.ts` is the Cloudflare Worker. `/api/subscribe` receives the
   email form; connect it to your provider or a D1 table.
 
+## Commande PayPal manuelle + pseudo Discord
+
+La boutique ne propose plus de paiement par carte. Le parcours actuel est
+volontairement manuel :
+
+1. Le client choisit ses produits et clique sur **Payer avec PayPal**.
+2. Le site ouvre `https://www.paypal.me/<PAYPAL_ME_HANDLE>` avec le montant
+   total prérempli, calculé côté serveur depuis `src/worker/prices.ts`.
+3. Après paiement, le client colle l’ID de transaction PayPal et confirme avec
+   son pseudo Discord (mémorisé localement, sans mot de passe).
+4. La commande est enregistrée dans `manual_orders` avec le statut `pending`.
+5. Le vendeur vérifie le paiement dans PayPal, livre le produit sur Discord,
+   puis passe la commande à `delivered`.
+
+Le pseudo Discord est une **identification simple**, pas un OAuth Discord : il
+permet de savoir où livrer et de contacter le client, mais ne prouve pas son
+identité. La vérification du paiement PayPal reste obligatoire avant livraison.
+
+```sh
+# Lister les commandes en attente (ADMIN_TOKEN dans l'en-tête)
+curl -H "Authorization: Bearer $ADMIN_TOKEN" \
+  https://<domaine>/api/admin/manual-orders
+
+# Marquer une commande comme livrée
+curl -X POST -H "Authorization: Bearer $ADMIN_TOKEN" \
+  -H 'content-type: application/json' \
+  -d '{"status":"delivered"}' \
+  https://<domaine>/api/admin/manual-orders/<order_id>/status
+```
+
+### Tableau de bord admin
+
+La page `/admin/` permet de saisir `ADMIN_TOKEN` dans le navigateur, puis de
+suivre les 100 dernières commandes manuelles : client Discord, articles, total,
+remise, code promo et statut. Une commande en attente peut être marquée livrée
+ou annulée, puis rouverte ; les codes promo et leur consommation sont affichés
+en lecture seule. Les données se rafraîchissent toutes les 60 secondes.
+
+Le jeton reste uniquement dans le `sessionStorage` de l’onglet et n’est jamais
+ajouté à l’URL ni au dépôt. La page est en `noindex` et n’est pas liée depuis la
+boutique.
+
+`POST /api/orders/manual/link` renvoie le lien PayPal.Me et le total recalculé.
+`POST /api/orders/manual` accepte `{ items, discord, paypalRef, note?, promoCode? }` et
+refuse un pseudo invalide, une transaction déjà utilisée ou un panier inconnu.
+Le pseudo est stocké sous la clé locale `ego-discord-v1` ; le panier reste sous
+`ego-cart-v1`.
+
+### Prix, pack et codes promo
+
+Les prix de `src/worker/prices.ts` sont la seule source de vérité : le montant
+affiché peut être amélioré, mais le lien PayPal et la commande sont toujours
+recalculés côté serveur. Le catalogue a une baisse permanente (aucun faux prix
+barré) et le pack **Nitro Boost Gift Link ×3** applique une remise réelle de
+10 % sur trois unités. `GET /api/prices` renvoie aussi `packs` pour l’affichage.
+
+Le code de lancement **`EGO10`** offre 10 % sur le total après remise pack,
+jusqu’à 1 000 commandes. Il est stocké en D1 (`promo_codes`) et chaque commande
+consomme une utilisation dans `promo_redemptions`. Un code invalide, expiré ou
+épuisé est refusé côté serveur ; le navigateur ne peut pas imposer le montant.
+
+```sh
+# Créer ou remplacer un code (ADMIN_TOKEN requis)
+curl -X POST -H "Authorization: Bearer $ADMIN_TOKEN" \
+  -H 'content-type: application/json' \
+  -d '{"code":"EGO10","percentOff":10,"maxUses":1000}' \
+  https://<domaine>/api/admin/promo-codes
+
+# Lister les codes et leur consommation
+curl -H "Authorization: Bearer $ADMIN_TOKEN" \
+  https://<domaine>/api/admin/promo-codes
+```
+
+`POST /api/orders/manual/link` et `POST /api/orders/manual` acceptent donc
+`promoCode`. Le lien de paiement affiche le sous-total, la remise et le total
+net ; le code est revérifié au moment d’enregistrer la commande.
+
 ## Avis clients vérifiés après achat
 
 La page `/reviews/index.html` n'affiche que des avis réellement déposés après
@@ -53,7 +130,7 @@ la page garde son état vide.
 Développement local (Worker + D1 local, port 4176) :
 
 ```sh
-bun run db:local   # applique les deux migrations sur la base D1 locale
+bun run db:local   # applique toutes les migrations sur la base D1 locale
 bun run dev:store  # sert le storefront + l'API
 ```
 
@@ -237,7 +314,22 @@ git.
 La landing (`deploy.json`, `bun run build`) publie `dist/client` et
 `dist/saas_landing/index.js`, séparément du storefront.
 
-Le storefront se prépare avec `npm run build:store` (Python 3 + Pillow requis) :
+Le storefront se prépare avec `npm run build:store` (Python 3 + Pillow requis).
+Avant toute génération, `npm run check:catalog` vérifie que les marques retirées
+(listées dans `scripts/catalog-policy.json`) ne réapparaissent pas et qu'un même
+produit n'a pas de carte, d'entrée ou de prix serveur en double, ni de prix
+contradictoire entre le JSON, la carte et `src/worker/prices.ts`. Les prix
+identiques entre deux produits différents restent normaux et autorisés. Si le
+contrôle échoue, le build s'arrête avant Wrangler.
+
+Le même build lance `npm run check:descriptions` : dans les meta `description`,
+`og:description`, `twitter:description` et chaque bloc `section.lxv__desc` des
+fiches, il refuse les puces résiduelles (`·`, `•`, `▪`, `◦`, `●`), les
+séparateurs décoratifs (`━`, `---`, `___`, `===`) et les `<li>` vides ou réduits
+à un séparateur. Une description vide ou une meta absente bloque aussi le
+build. Le contrôle repasse sur `dist/storefront-assets` après la copie des
+assets, donc sur ce qui part réellement en ligne ; `--path` permet de viser une
+fiche isolée.
 
 - bundle du Worker dans `dist/storefront/index.js` ;
 - assets utiles copiés dans `dist/storefront-assets` : toutes les pages HTML et
@@ -247,3 +339,45 @@ Le storefront se prépare avec `npm run build:store` (Python 3 + Pillow requis) 
 
 Le manifeste `deploy.storefront.json` pointe sur ces deux sorties : c'est lui
 qu'il faut passer à `sites_deploy`, pas `deploy.json`.
+
+### Déploiement et smoke test
+
+Le storefront est publié via Sites (`deploy.storefront.json`). Chaque
+déploiement se termine par une commande unique qui vérifie que la nouvelle
+version est en ligne, puis enchaîne le smoke test :
+
+```sh
+npm run deploy:store
+# Attente plus courte, sans reconstruire :
+python scripts/deploy_storefront.py --no-build --timeout 60
+```
+
+Le build publie `dist/storefront-assets/build.json`, une empreinte des HTML,
+CSS, JS et du bundle Worker. `deploy:store` reconstruit les assets, attend que
+cette empreinte soit servie en production (300 s par défaut), vérifie les
+descriptions des fiches publiques, puis exécute `scripts/smoke_prod.py`. Un
+déploiement périmé, une description non nettoyée ou un smoke test oublié font
+donc échouer la commande.
+
+Le contrôle des descriptions publiques peut être relancé seul :
+
+```sh
+npm run check:descriptions:prod
+# Une fiche précise :
+python scripts/check_public_descriptions.py --slug 3-month-nitro-2-boosts-phone-verified
+```
+
+Le smoke test seul reste disponible :
+
+```sh
+npm run smoke:prod
+# Autre environnement :
+python scripts/smoke_prod.py --base-url http://127.0.0.1:4176
+```
+
+Le test vérifie `/api/prices`, la fiche produit et
+`POST /api/orders/manual/link` : prix `2,49 €`, panier à deux articles avec
+quantités et total recalculés serveur, application du code `EGO10` (remise,
+total et lien `paypal.me`) et refus d’un code inconnu. `--promo-code` cible un
+autre code actif. Aucune commande n’est créée et aucun usage de promo n’est
+consommé. Il sort avec le code `1` si l’un de ces contrôles échoue.

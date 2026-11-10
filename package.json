@@ -6,10 +6,15 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && node scripts/postbuild.mjs",
-    "build:store": "wrangler deploy --config wrangler.storefront.jsonc --dry-run --outdir dist/storefront && python scripts/build_store_assets.py",
+    "check:catalog": "python scripts/check_catalog.py",
+    "check:descriptions": "python scripts/check_descriptions.py",
+    "check:descriptions:prod": "python scripts/check_public_descriptions.py",
+    "smoke:prod": "python scripts/smoke_prod.py",
+    "deploy:store": "python scripts/deploy_storefront.py",
+    "build:store": "python scripts/check_catalog.py && python scripts/check_descriptions.py && wrangler deploy --config wrangler.storefront.jsonc --dry-run --outdir dist/storefront && python scripts/build_store_assets.py && python scripts/check_descriptions.py --built",
     "preview": "vite preview",
     "dev:store": "wrangler dev --config wrangler.storefront.jsonc --port 4176",
-    "db:local": "wrangler d1 execute ego-reviews --config wrangler.storefront.jsonc --local --file=./migrations/0001_reviews.sql && wrangler d1 execute ego-reviews --config wrangler.storefront.jsonc --local --file=./migrations/0002_payments.sql",
+    "db:local": "wrangler d1 execute ego-reviews --config wrangler.storefront.jsonc --local --file=./migrations/0001_reviews.sql && wrangler d1 execute ego-reviews --config wrangler.storefront.jsonc --local --file=./migrations/0002_payments.sql && wrangler d1 execute ego-reviews --config wrangler.storefront.jsonc --local --file=./migrations/0003_manual_orders.sql && wrangler d1 execute ego-reviews --config wrangler.storefront.jsonc --local --file=./migrations/0004_promo_codes.sql",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
