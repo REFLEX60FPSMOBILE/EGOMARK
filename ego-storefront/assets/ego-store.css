@@ -212,7 +212,7 @@ button { cursor: pointer; }
 .eyebrow::before { content: ""; width: 22px; height: 1px; background: var(--ember); }
 .hero h1 {
   margin: 1.35rem 0 1.4rem;
-  font-family: var(--display); font-size: clamp(3.4rem, 8.4vw, 7.4rem);
+  font-family: var(--display); font-size: clamp(3.4rem, 6.6vw, 5.6rem);
   font-weight: 700; line-height: .88; letter-spacing: -.055em; text-transform: uppercase;
 }
 .hero h1 .accent { display: block; color: var(--ember); text-shadow: 0 0 40px rgba(183, 110, 114, .28); }
@@ -369,6 +369,18 @@ button { cursor: pointer; }
 .cta-panel h2 { max-width: 16ch; margin: .6rem 0 1rem; font-family: var(--display); font-size: clamp(2rem, 4.8vw, 4rem); font-weight: 600; line-height: .95; letter-spacing: -.045em; text-transform: uppercase; }
 .cta-panel p { max-width: 50ch; margin: 0 0 1.7rem; color: var(--ash); font-size: .9rem; line-height: 1.7; }
 
+/* ---------- Communauté Discord ---------- */
+.discord-panel { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: clamp(2rem, 5vw, 4rem); padding: clamp(2rem, 5vw, 4rem); border: 1px solid rgba(88, 101, 242, .28); border-radius: 24px; background: radial-gradient(80% 120% at 100% 0%, rgba(88, 101, 242, .16), transparent 55%), linear-gradient(160deg, #151011, #0a0a0b 70%); }
+.discord-panel::before { content: ""; position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(rgba(240, 232, 227,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(240, 232, 227,.045) 1px, transparent 1px); background-size: 46px 46px; -webkit-mask-image: radial-gradient(ellipse at 100% 0%, #000, transparent 70%); mask-image: radial-gradient(ellipse at 100% 0%, #000, transparent 70%); opacity: .5; }
+.discord-panel > * { position: relative; z-index: 1; }
+.discord-copy h2 { max-width: 16ch; margin: .6rem 0 1rem; font-family: var(--display); font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 600; line-height: .95; letter-spacing: -.045em; text-transform: uppercase; }
+.discord-copy h2 .accent, .discord-copy .accent { color: var(--ember); }
+.discord-copy p { max-width: 46ch; margin: 0 0 1.5rem; color: var(--ash); font-size: .9rem; line-height: 1.7; }
+.discord-badges { display: flex; flex-wrap: wrap; gap: .5rem; }
+.discord-badges span { padding: .45rem .85rem; border: 1px solid var(--line-strong); border-radius: 999px; color: var(--ash); font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+.discord-widget { flex: 0 0 auto; }
+.discord-widget iframe { display: block; max-width: 100%; border-radius: 12px; }
+
 /* ---------- Footer ---------- */
 .site-footer { padding: 4rem 0 1.8rem; border-top: 1px solid var(--line); background: #151011; }
 .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 2rem; }
@@ -413,7 +425,7 @@ button { cursor: pointer; }
 }
 @media (max-width: 1100px) {
   .hero-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
-  .hero h1 { font-size: clamp(3.2rem, 7.6vw, 5.8rem); }
+  .hero h1 { font-size: clamp(3.2rem, 6.4vw, 5.2rem); }
   .category-grid, .product-grid, .catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .why-grid { grid-template-columns: 1fr; }
   .why-sticky { position: static; }
@@ -433,6 +445,8 @@ button { cursor: pointer; }
   .steps { grid-template-columns: 1fr; }
   .catalog-controls { top: 76px; }
   .catalog-count { margin-left: 0; }
+  .discord-panel { flex-direction: column-reverse; align-items: flex-start; }
+  .discord-widget { align-self: center; }
 }
 @media (max-width: 640px) {
   .container { width: calc(100% - 32px); }
@@ -446,7 +460,7 @@ button { cursor: pointer; }
   .chip { display: inline-flex; align-items: center; min-height: 40px; padding-inline: .95rem; }
   .nav-link { display: inline-flex; align-items: center; min-height: 40px; }
   .hero { padding-top: 3.5rem; }
-  .hero h1 { font-size: clamp(2.9rem, 14vw, 4.2rem); }
+  .hero h1 { font-size: clamp(2.6rem, 12.8vw, 4rem); }
   .hero-stats { gap: 1.4rem; margin-top: 2.2rem; }
   .hero-stat strong { font-size: 1.2rem; }
   .hero-visual { min-height: 410px; }
@@ -469,6 +483,8 @@ button { cursor: pointer; }
   .search { min-width: 100%; }
   .sort { flex: 1; }
   .cta-panel { border-radius: 18px; }
+  .discord-panel { border-radius: 18px; }
+  .discord-badges span { white-space: normal; }
 }
 
 @media (prefers-reduced-motion: reduce) {

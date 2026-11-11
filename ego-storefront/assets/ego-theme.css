@@ -732,6 +732,77 @@ body {
 .ego-pay__hint { font-size: .78rem; color: rgba(240, 232, 227, .55); }
 .ego-pay__status { margin: 0; font-size: .8rem; color: rgba(240, 232, 227, .75); }
 .ego-pay__status[data-tone='error'] { color: #e6b0ad; }
+.ego-pay__status[data-tone='success'] { color: #b7d7bd; }
+
+.ego-pay__steps {
+  margin: .2rem 0 .1rem;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: .28rem;
+  color: rgba(240, 232, 227, .62);
+  font-size: .76rem;
+  line-height: 1.45;
+}
+
+.ego-pay__who {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .32rem;
+  margin: .15rem 0 0;
+  padding: .55rem .65rem;
+  border: 1px solid rgba(183, 110, 114, .2);
+  border-radius: 9px;
+  background: rgba(183, 110, 114, .06);
+  color: rgba(240, 232, 227, .65);
+  font-size: .76rem;
+}
+.ego-pay__who strong { color: #f0e8e3; font-weight: 600; }
+.ego-pay__linkbtn {
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #d9aaa8;
+  font: inherit;
+  font-size: .72rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.ego-pay__form { display: grid; gap: .62rem; margin-top: .2rem; }
+.ego-pay__field { display: grid; gap: .28rem; color: rgba(240, 232, 227, .58); font-size: .72rem; }
+.ego-pay__field input,
+.ego-pay__field textarea {
+  width: 100%;
+  padding: .6rem .7rem;
+  border: 1px solid rgba(240, 232, 227, .14);
+  border-radius: 9px;
+  outline: none;
+  background: rgba(10, 7, 8, .45);
+  color: #f0e8e3;
+  font: inherit;
+  font-size: .82rem;
+  resize: vertical;
+}
+.ego-pay__field input:focus,
+.ego-pay__field textarea:focus { border-color: rgba(220, 143, 148, .6); }
+.ego-pay__submit {
+  min-height: 40px;
+  padding: .55rem .8rem;
+  border: 1px solid rgba(240, 232, 227, .12);
+  border-radius: 999px;
+  background: #b76e72;
+  color: #1a1112;
+  font: inherit;
+  font-size: .78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.ego-pay__submit:hover:not(:disabled) { background: #cf8589; }
+.ego-pay__submit:disabled { opacity: .55; cursor: wait; }
+.ego-pay__success { display: grid; gap: .35rem; padding: .3rem 0; }
+.ego-pay__success h3 { margin: 0; color: #f0e8e3; font-size: .95rem; }
 
 /* Paiement direct PayPal.Me : montant + référence à recopier */
 .ego-pay__confirm {
@@ -770,6 +841,99 @@ body {
 }
 .ego-pay__go:hover { background: #c98286; }
 .ego-pay__go:focus-visible { outline: 2px solid #f0e8e3; outline-offset: 2px; }
+
+/* Code promo : validation serveur, total et lien PayPal recalculés */
+.ego-promo {
+  display: grid;
+  gap: .38rem;
+  margin: .15rem 0 .1rem;
+  padding: .65rem .7rem;
+  border: 1px solid rgba(240, 232, 227, .12);
+  border-radius: .65rem;
+  background: rgba(10, 7, 8, .28);
+}
+.ego-promo__label { color: rgba(240, 232, 227, .58); font-size: .72rem; }
+.ego-promo__row { display: flex; gap: .4rem; }
+.ego-promo__row input {
+  min-width: 0;
+  flex: 1;
+  padding: .55rem .65rem;
+  border: 1px solid rgba(240, 232, 227, .16);
+  border-radius: .55rem;
+  outline: none;
+  background: rgba(10, 7, 8, .45);
+  color: #f0e8e3;
+  font: inherit;
+  font-size: .8rem;
+  text-transform: uppercase;
+}
+.ego-promo__row input:focus { border-color: rgba(220, 143, 148, .6); }
+.ego-promo__btn {
+  min-height: 36px;
+  padding: 0 .75rem;
+  border: 1px solid rgba(240, 232, 227, .18);
+  border-radius: .55rem;
+  background: rgba(240, 232, 227, .07);
+  color: #f0e8e3;
+  font: inherit;
+  font-size: .75rem;
+  cursor: pointer;
+}
+.ego-promo__btn:hover:not(:disabled) { border-color: rgba(183, 110, 114, .55); background: rgba(183, 110, 114, .12); }
+.ego-promo__btn:disabled { opacity: .55; cursor: wait; }
+.ego-promo__hint { color: rgba(240, 232, 227, .42); font-size: .68rem; }
+.ego-promo__status { margin: 0; font-size: .72rem; line-height: 1.4; color: rgba(240, 232, 227, .7); }
+.ego-promo__status[data-tone='error'] { color: #e6b0ad; }
+.ego-promo__status[data-tone='success'] { color: #b7d7bd; }
+.ego-pay__summary { color: #d9aaa8; }
+
+/* Pack pilote : offre réelle, prix et économie calculés côté serveur */
+.ego-pack {
+  display: grid;
+  gap: .45rem;
+  margin-top: .9rem;
+  padding: 1rem;
+  border: 1px solid rgba(183, 110, 114, .35);
+  border-radius: .85rem;
+  background:
+    radial-gradient(28rem 12rem at 0 0, rgba(183, 110, 114, .18), transparent 70%),
+    rgba(27, 21, 23, .92);
+}
+.ego-pack__head { display: flex; align-items: center; justify-content: space-between; gap: .7rem; }
+.ego-pack__eyebrow {
+  color: #d9aaa8;
+  font-size: .68rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.ego-pack__badge {
+  padding: .18rem .45rem;
+  border: 1px solid rgba(183, 110, 114, .45);
+  border-radius: 999px;
+  background: rgba(183, 110, 114, .12);
+  color: #e7c3c2;
+  font-size: .68rem;
+  font-weight: 600;
+}
+.ego-pack h3 { margin: 0; color: #f0e8e3; font-family: var(--ego-display); font-size: 1rem; }
+.ego-pack__copy { margin: 0; color: rgba(240, 232, 227, .66); font-size: .76rem; line-height: 1.45; }
+.ego-pack__price { display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem; }
+.ego-pack__price strong { color: #f0e8e3; font-family: var(--ego-display); font-size: 1.35rem; }
+.ego-pack__price span { color: rgba(240, 232, 227, .52); font-size: .72rem; }
+.ego-pack__btn {
+  min-height: 40px;
+  padding: 0 .9rem;
+  border: 1px solid rgba(183, 110, 114, .5);
+  border-radius: .55rem;
+  background: rgba(183, 110, 114, .16);
+  color: #f0e8e3;
+  font: inherit;
+  font-size: .8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.ego-pack__btn:hover { background: rgba(183, 110, 114, .28); }
+.ego-pack__note { margin: 0; color: rgba(240, 232, 227, .4); font-size: .68rem; }
 
 /* Panier : tiroir latéral, quantités et paiement */
 .ego-cart-trigger { position: relative; }
