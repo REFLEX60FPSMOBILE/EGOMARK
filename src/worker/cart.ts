@@ -3,6 +3,7 @@
 // fusionnée par produit, bornée pour éviter les abus.
 
 import { PRICES } from './prices'
+import { PACK_PRICES } from './packs'
 
 export const CART_MAX_ITEMS = 10
 export const CART_MAX_QUANTITY = 10
@@ -43,7 +44,7 @@ export function parseCart(raw: unknown): CartResult {
   const items: CartItem[] = []
   let totalCents = 0
   for (const [slug, quantity] of merged) {
-    const entry = PRICES[slug]
+    const entry = PRICES[slug] ?? PACK_PRICES[slug]
     if (!entry) return { kind: 'error', error: 'unknown_product' }
     items.push({ slug, quantity, name: entry.name, amountCents: entry.amountCents })
     totalCents += entry.amountCents * quantity

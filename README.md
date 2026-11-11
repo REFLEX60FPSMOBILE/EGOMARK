@@ -44,6 +44,13 @@ Le pseudo Discord est une **identification simple**, pas un OAuth Discord : il
 permet de savoir où livrer et de contacter le client, mais ne prouve pas son
 identité. La vérification du paiement PayPal reste obligatoire avant livraison.
 
+Si le secret `DISCORD_WEBHOOK_URL` est défini, chaque nouvelle commande poste
+aussi un message dans le salon Discord configuré : pseudo, articles et
+quantités, sous-total, remise et code promo, total, référence PayPal, note du
+client, numéro de commande et bouton vers `/admin/`. La notification part à
+l'enregistrement (paiement encore à vérifier), reste best-effort et n'empêche
+jamais la commande d'être acceptée.
+
 ```sh
 # Lister les commandes en attente (ADMIN_TOKEN dans l'en-tête)
 curl -H "Authorization: Bearer $ADMIN_TOKEN" \
@@ -61,8 +68,23 @@ curl -X POST -H "Authorization: Bearer $ADMIN_TOKEN" \
 La page `/admin/` permet de saisir `ADMIN_TOKEN` dans le navigateur, puis de
 suivre les 100 dernières commandes manuelles : client Discord, articles, total,
 remise, code promo et statut. Une commande en attente peut être marquée livrée
-ou annulée, puis rouverte ; les codes promo et leur consommation sont affichés
-en lecture seule. Les données se rafraîchissent toutes les 60 secondes.
+ou annulée, puis rouverte. Les codes promo se créent ou se mettent à jour
+directement dans la page et peuvent être activés ou désactivés ; leur
+consommation est affichée en lecture seule. Les données se rafraîchissent
+toutes les 60 secondes.
+
+### Espace client
+
+`/dashboard/` suit les commandes de l’appareil sans compte ni mot de passe. À
+la création, l’API renvoie un jeton de suivi dérivé du numéro de commande et de
+`REVIEW_SALT` ; le navigateur le conserve dans `ego-orders-v1`. La page ne
+renvoie que les commandes dont le jeton est valide, avec statut, articles,
+total, remise et transaction PayPal masquée.
+
+Sur un autre appareil, le formulaire « Retrouver une commande » demande le
+numéro `EGO-…` et l’ID de transaction PayPal exact, puis renvoie le jeton. Les
+tentatives sont limitées par IP. Une rotation de `REVIEW_SALT` invalide les
+jetons existants, comme les empreintes d’avis.
 
 Le jeton reste uniquement dans le `sessionStorage` de l’onglet et n’est jamais
 ajouté à l’URL ni au dépôt. La page est en `noindex` et n’est pas liée depuis la
@@ -219,6 +241,38 @@ PayPal reste sur PayPal.Me. Dès qu'ils sont présents, le flux Orders v2 prend
 le relais : capture côté serveur, commande enregistrée et droit à l'avis
 vérifié, sans aucune intervention manuelle.
 
+### Connexion Discord OAuth2
+
+La page `/dashboard/` propose un bouton **Se connecter avec Discord**. Le flux
+utilise les scopes `identify email`, l'URI de retour
+`https://<domaine>/auth/callback` et un cookie d'État CSRF HttpOnly.
+
+- `GET /auth/discord` redirige vers l'autorisation Discord.
+- `GET /auth/callback` échange le code côté Worker, lit `/users/@me`, crée ou
+  rattache un compte client dans `discord_identities`, ouvre une session
+  HttpOnly puis redirige vers `/dashboard/`.
+- Les erreurs reviennent sur l'accueil avec `?discord_error=...` et une
+  notification côté navigateur.
+- Un e-mail Discord n'est utilisé pour rattacher un compte existant que s'il est
+  vérifié par Discord. Sinon un compte est créé avec un e-mail synthétique.
+
+Variables à définir hors du dépôt : `DISCORD_CLIENT_ID` (facultatif, la valeur
+publique par défaut est déjà intégrée), `DISCORD_CLIENT_SECRET` (obligatoire)
+et éventuellement `DISCORD_REDIRECT_URI` si l'URL de retour doit être forcée.
+En local les mettre dans `.dev.vars` ; sur Freebuff Sites, ajouter
+`DISCORD_CLIENT_SECRET` dans **Sites → Secrets** (la production n'est pas
+gérée par un Worker Wrangler local, donc `wrangler secret put` ne cible pas le
+bon Worker). Ne jamais committer le Client Secret.
+
+Après le déploiement, créer la table en production avec le schéma idempotent :
+
+```sh
+curl -X POST -H "Authorization: Bearer $ADMIN_TOKEN" \
+  https://<domaine>/api/admin/init
+```
+
+La migration `migrations/0006_discord_oauth.sql` reste la référence locale.
+
 ### Paiement direct PayPal.Me
 
 Sans identifiants API (`PAYPAL_CLIENT_ID` / `PAYPAL_CLIENT_SECRET`), le bouton
@@ -275,6 +329,10 @@ git.
 - `PAYPAL_CLIENT_ID` / `PAYPAL_CLIENT_SECRET` : application REST **Live**.
 - `PAYPAL_WEBHOOK_ID` : webhook **Live** ; sans lui, `POST
   /api/payments/paypal` répond `503`.
+- `DISCORD_WEBHOOK_URL` : URL du webhook du salon Discord (Paramètres du
+  salon → Intégrations → Webhooks). Facultatif : sans lui, aucune notification
+  n'est envoyée. À stocker dans les secrets de l'hébergeur, jamais dans le
+  dépôt.
 
 ### Variables simples
 - `PAYPAL_ENV=live` : valeur exacte, sensible à la casse ; sinon l'API sandbox

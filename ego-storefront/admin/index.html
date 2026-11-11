@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#100c0d" />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <title>Console staff | EGO Market</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/ego-favicon.svg?v=20261110a" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/ego-admin.css?v=20261111c" />
+  <link rel="stylesheet" href="/assets/ego-console.css?v=20261111c" />
+</head>
+<body class="console-page">
+  <a class="skip-link" href="#console-main">Aller au contenu</a>
+
+  <header class="admin-header">
+    <div class="admin-container admin-header__inner">
+      <a class="admin-brand" href="/" aria-label="EGO Market — accueil">
+        <img src="/assets/ego-wordmark.svg?v=20261110a" alt="EGO Market" />
+      </a>
+      <span class="admin-badge">Console staff</span>
+      <div class="admin-header__actions">
+        <a class="admin-link" href="/">Boutique <span aria-hidden="true">↗</span></a>
+        <button class="console-btn console-btn--ghost" id="logout" type="button" hidden>Verrouiller</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="console-shell" id="console-main">
+    <section class="console-auth" id="auth-gate" aria-labelledby="auth-title">
+      <p class="eyebrow">Accès restreint</p>
+      <h1 id="auth-title">Console d’administration</h1>
+      <p>Entre le jeton administrateur ou un jeton staff pour piloter les commandes, le stock, le support et la sécurité.</p>
+      <form class="console-form auth-form" id="auth-form" novalidate>
+        <label class="field" for="admin-token">
+          <span>Jeton d’accès</span>
+          <input id="admin-token" type="password" autocomplete="off" autocapitalize="none" spellcheck="false" required placeholder="ADMIN_TOKEN ou jeton staff" />
+        </label>
+        <button class="console-btn console-btn--primary console-btn--block" id="auth-submit" type="submit">Ouvrir la console</button>
+        <p class="console-error" id="auth-error" role="alert" hidden></p>
+      </form>
+      <p class="console-note">Le jeton reste dans cet onglet. Le serveur vérifie les droits avant chaque action.</p>
+    </section>
+
+    <section class="console-app" id="console-app" hidden>
+      <aside class="console-sidebar" aria-label="Navigation staff">
+        <div class="console-identity">
+          <strong id="staff-name">Staff</strong>
+          <span id="staff-role">Rôle</span>
+        </div>
+        <nav class="console-nav" id="console-nav">
+          <button class="is-active" type="button" data-tab="overview" data-title="Vue d’ensemble" data-subtitle="Chiffre d’affaires, conversion et santé de la boutique.">▦ Vue d’ensemble</button>
+          <button type="button" data-tab="orders" data-title="Gestion des commandes" data-subtitle="Vérifier les paiements, livrer et suivre les litiges.">▤ Commandes</button>
+          <button type="button" data-tab="stock" data-title="Stock & produits" data-subtitle="Stocks, clés d’activation et alertes de rupture.">▥ Stock & produits</button>
+          <button type="button" data-tab="support" data-title="Centre de support" data-subtitle="Tickets, réponses préenregistrées et assignation.">◌ Support</button>
+          <button type="button" data-tab="security" data-title="Sécurité & logs" data-subtitle="Traçabilité staff, liste noire et comptes staff." data-admin-only hidden>⛨ Sécurité</button>
+          <button type="button" data-tab="promos" data-title="Codes promo" data-subtitle="Créer, suivre et désactiver les remises.">％ Promos</button>
+        </nav>
+        <div class="console-sidebar__foot">
+          <div id="sidebar-build">Données D1 en direct</div>
+          <div>Les actions staff sont journalisées.</div>
+        </div>
+      </aside>
+
+      <div class="console-main">
+        <div class="console-topbar">
+          <div>
+            <p class="eyebrow">Administration</p>
+            <h1 id="panel-title">Vue d’ensemble</h1>
+            <p id="panel-subtitle">Chiffre d’affaires, conversion et santé de la boutique.</p>
+          </div>
+          <div class="console-topbar__actions">
+            <span class="console-updated" id="last-updated">Jamais actualisé</span>
+            <button class="console-btn" id="refresh" type="button">↻ Actualiser</button>
+          </div>
+        </div>
+
+        <div class="console-notice" id="notice" role="status" aria-live="polite" hidden></div>
+
+        <section class="console-panel" data-panel="overview" aria-label="Vue d’ensemble">
+          <div class="kpi-grid">
+            <article class="kpi-card kpi-card--accent"><span>CA aujourd’hui</span><strong id="kpi-revenue-day">—</strong><small>commandes payées/livrées</small></article>
+            <article class="kpi-card"><span>CA 7 jours</span><strong id="kpi-revenue-week">—</strong><small>sur 7 jours</small></article>
+            <article class="kpi-card"><span>CA 30 jours</span><strong id="kpi-revenue-month">—</strong><small>sur 30 jours</small></article>
+            <article class="kpi-card"><span>Conversion</span><strong id="kpi-conversion">—</strong><small>payées + livrées / reçues</small></article>
+            <article class="kpi-card"><span>Commandes</span><strong id="kpi-orders">—</strong><small id="kpi-orders-note">sur la période</small></article>
+            <article class="kpi-card kpi-card--red"><span>Tickets ouverts</span><strong id="kpi-tickets">—</strong><small>à traiter</small></article>
+            <article class="kpi-card kpi-card--red"><span>Stock faible</span><strong id="kpi-stock">—</strong><small>produits à réapprovisionner</small></article>
+            <article class="kpi-card kpi-card--green"><span>Livrées</span><strong id="kpi-delivered">—</strong><small>commandes livrées</small></article>
+          </div>
+
+          <div class="console-grid console-grid--2" style="margin-top:16px">
+            <article class="console-card">
+              <header class="console-card__head"><div><h2>Ventes par catégorie</h2><p>Chiffre d’affaires des commandes payées ou livrées sur 30 jours.</p></div></header>
+              <div class="console-chart" id="category-chart"></div>
+              <p class="console-empty" id="category-empty" hidden><strong>Aucune vente catégorisée</strong><span>Les commandes payées apparaîtront ici.</span></p>
+            </article>
+            <article class="console-card">
+              <header class="console-card__head"><div><h2>Alertes de stock</h2><p>Clés disponibles et seuil de réapprovisionnement.</p></div><button class="console-btn console-btn--sm" type="button" data-go-tab="stock">Gérer</button></header>
+              <div class="console-list" id="low-stock-list"></div>
+              <p class="console-empty" id="low-stock-empty" hidden><strong>Aucune alerte</strong><span>Les produits sont suffisamment approvisionnés.</span></p>
+            </article>
+          </div>
+
+          <div class="console-grid console-grid--2" style="margin-top:16px">
+            <article class="console-card">
+              <header class="console-card__head"><div><h2>Dernières commandes</h2><p>Les six commandes les plus récentes.</p></div><button class="console-btn console-btn--sm" type="button" data-go-tab="orders">Tout voir</button></header>
+              <div class="console-list" id="recent-orders"></div>
+            </article>
+            <article class="console-card">
+              <header class="console-card__head"><div><h2>Journal récent</h2><p>Dernières actions staff enregistrées.</p></div></header>
+              <div class="console-list" id="recent-audit"></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="console-panel" data-panel="orders" aria-label="Gestion des commandes" hidden>
+          <div class="console-toolbar">
+            <label class="console-search" for="orders-search">
+              <span aria-hidden="true">⌕</span>
+              <input id="orders-search" type="search" autocomplete="off" placeholder="Rechercher un n° de commande, PayPal ou Discord…" />
+            </label>
+            <div class="console-filters" id="order-status-filters">
+              <button class="console-filter is-active" type="button" data-status="all">Toutes <span data-count>0</span></button>
+              <button class="console-filter" type="button" data-status="pending">À vérifier <span data-count>0</span></button>
+              <button class="console-filter" type="button" data-status="paid">Payées <span data-count>0</span></button>
+              <button class="console-filter" type="button" data-status="delivered">Livrées <span data-count>0</span></button>
+              <button class="console-filter" type="button" data-status="dispute">Litiges <span data-count>0</span></button>
+              <button class="console-filter" type="button" data-status="cancelled">Annulées <span data-count>0</span></button>
+            </div>
+          </div>
+          <div class="console-table-wrap">
+            <table class="console-table">
+              <thead><tr><th>Commande</th><th>Client</th><th>Total</th><th>Paiement</th><th>Statut</th><th>Actions</th></tr></thead>
+              <tbody id="orders-body"></tbody>
+            </table>
+            <p class="console-empty" id="orders-empty" hidden><strong>Aucune commande affichée</strong><span>Modifie les filtres ou attends une nouvelle commande.</span></p>
+          </div>
+          <p class="console-note" id="orders-count" style="margin-top:10px">0 commande</p>
+        </section>
+
+        <section class="console-panel" data-panel="stock" aria-label="Stock et produits" hidden>
+          <div class="console-grid console-grid--2">
+            <article class="console-card">
+              <header class="console-card__head"><div><h2 id="stock-form-title">Ajouter / modifier un produit</h2><p>Le catalogue reste statique ; ce module pilote son stock et ses clés.</p></div></header>
+              <form class="console-form" id="stock-form" novalidate>
+                <div class="console-form__row">
+                  <label class="field" for="stock-slug"><span>Slug produit</span><input id="stock-slug" type="text" required placeholder="ex. nitro-1-month" /></label>
+                  <label class="field" for="stock-name"><span>Nom affiché</span><input id="stock-name" type="text" required maxlength="120" placeholder="Nitro 1 mois" /></label>
+                </div>
+                <div class="console-form__row">
+                  <label class="field" for="stock-category"><span>Catégorie</span><input id="stock-category" type="text" maxlength="40" placeholder="auto" /></label>
+                  <label class="field" for="stock-price"><span>Prix (€)</span><input id="stock-price" type="number" min="0" step="0.01" placeholder="9.99" /></label>
+                </div>
+                <div class="console-form__row">
+                  <label class="field" for="stock-stock"><span>Stock déclaré</span><input id="stock-stock" type="number" min="0" step="1" value="0" /></label>
+                  <label class="field" for="stock-threshold"><span>Seuil d’alerte</span><input id="stock-threshold" type="number" min="0" step="1" value="3" /></label>
+                </div>
+                <label class="console-check"><input id="stock-active" type="checkbox" checked /> Produit actif</label>
+                <p class="console-error" id="stock-error" role="alert" hidden></p>
+                <button class="console-btn console-btn--primary" id="stock-submit" type="submit">Enregistrer le produit</button>
+              </form>
+            </article>
+            <article class="console-card">
+              <header class="console-card__head"><div><h2>Importer des clés</h2><p>Une clé ou un lien par ligne. Les doublons sont ignorés.</p></div></header>
+              <form class="console-form" id="keys-form" novalidate>
+                <label class="field" for="keys-product"><span>Produit</span><select id="keys-product" required></select></label>
+                <label class="field" for="keys-text"><span>Clés / codes</span><textarea id="keys-text" rows="7" placeholder="CODE-1&#10;CODE-2&#10;https://…" required></textarea></label>
+                <p class="console-error" id="keys-error" role="alert" hidden></p>
+                <button class="console-btn console-btn--primary" id="keys-submit" type="submit">Importer les clés</button>
+              </form>
+              <p class="console-note">Les clés sont masquées côté client et révélées uniquement dans son vault après livraison.</p>
+            </article>
+          </div>
+          <article class="console-card" style="margin-top:16px">
+            <header class="console-card__head"><div><h2>Stocks suivis</h2><p>Clique sur « Clés » pour consulter ou désactiver une clé.</p></div></header>
+            <div class="console-table-wrap">
+              <table class="console-table"><thead><tr><th>Produit</th><th>Catégorie</th><th>Prix</th><th>Stock</th><th>Clés dispo.</th><th>Seuil</th><th>Actions</th></tr></thead><tbody id="stock-list"></tbody></table>
+              <p class="console-empty" id="stock-empty" hidden><strong>Aucun stock suivi</strong><span>Ajoute un produit ou importe des clés.</span></p>
+            </div>
+          </article>
+          <article class="console-card" id="keys-card" style="margin-top:16px" hidden>
+            <header class="console-card__head"><div><h2 id="keys-title">Clés du produit</h2><p>Valeurs visibles uniquement par le staff.</p></div><button class="console-btn console-btn--sm" type="button" id="keys-close">Fermer</button></header>
+            <div class="console-keys" id="keys-list"></div>
+          </article>
+        </section>
+
+        <section class="console-panel" data-panel="support" aria-label="Support" hidden>
+          <div class="console-split">
+            <article class="console-card">
+              <header class="console-card__head"><div><h2>Tickets</h2><p>Les derniers échanges support.</p></div><span class="console-tag" id="ticket-count">0</span></header>
+              <div class="console-ticket-list" id="ticket-list"></div>
+              <p class="console-empty" id="ticket-empty" hidden><strong>Aucun ticket</strong><span>Les demandes clients apparaîtront ici.</span></p>
+              <div style="margin-top:14px">
+                <h3 style="margin:0 0 8px;font:600 12px Inter">Réponses préenregistrées</h3>
+                <form class="console-form" id="canned-form">
+                  <div class="console-form__row">
+                    <label class="field"><span>Titre</span><input id="canned-title" type="text" maxlength="80" required /></label>
+                    <label class="field"><span>Texte</span><input id="canned-body" type="text" maxlength="500" required /></label>
+                  </div>
+                  <button class="console-btn console-btn--sm" type="submit">Ajouter le modèle</button>
+                </form>
+                <div class="console-list" id="canned-list" style="margin-top:8px"></div>
+              </div>
+            </article>
+            <article class="console-card">
+              <div id="ticket-thread-empty" class="console-empty"><strong>Sélectionne un ticket</strong><span>La conversation et les actions apparaîtront ici.</span></div>
+              <div id="ticket-thread" hidden>
+                <header class="console-card__head">
+                  <div><h2 id="ticket-subject">Ticket</h2><p id="ticket-meta">—</p></div>
+                  <span class="console-tag" id="ticket-status-tag">—</span>
+                </header>
+                <div class="console-thread" id="ticket-messages"></div>
+                <div class="console-reply">
+                  <div class="console-reply__row">
+                    <select id="ticket-canned" aria-label="Réponse préenregistrée"><option value="">Modèle de réponse…</option></select>
+                    <input id="ticket-assignee" type="text" maxlength="40" placeholder="Assigné à…" />
+                    <button class="console-btn console-btn--sm" id="ticket-assign" type="button">Assigner</button>
+                  </div>
+                  <form id="ticket-reply-form">
+                    <label class="field"><span>Réponse staff</span><textarea id="ticket-reply" rows="4" required></textarea></label>
+                    <div class="console-reply__row" style="margin-top:8px">
+                      <select id="ticket-status" aria-label="Statut du ticket">
+                        <option value="open">Ouvert</option>
+                        <option value="pending">En attente client</option>
+                        <option value="resolved">Résolu</option>
+                        <option value="closed">Fermé</option>
+                      </select>
+                      <button class="console-btn console-btn--primary" id="ticket-send" type="submit">Envoyer la réponse</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="console-panel" data-panel="security" aria-label="Sécurité" hidden>
+          <p class="console-note" id="security-admin-note" hidden>Cette section est réservée au rôle admin.</p>
+          <div class="console-grid console-grid--2">
+            <article class="console-card">
+              <header class="console-card__head"><div><h2>Journal staff</h2><p>Qui a livré, modifié ou supprimé quoi, et quand.</p></div></header>
+              <div class="console-list" id="audit-list"></div>
+            </article>
+            <article class="console-card">
+              <header class="console-card__head"><div><h2>Liste noire</h2><p>IP, e-mail PayPal, Discord ou e-mail bloqué.</p></div></header>
+              <form class="console-form" id="blacklist-form">
+                <div class="console-form__row">
+                  <label class="field"><span>Type</span><select id="blacklist-kind"><option value="paypal">PayPal</option><option value="discord">Discord</option><option value="ip">IP</option><option value="email">E-mail</option></select></label>
+                  <label class="field"><span>Valeur</span><input id="blacklist-value" type="text" required placeholder="Référence, pseudo, IP…" /></label>
+                </div>
+                <label class="field"><span>Motif</span><input id="blacklist-reason" type="text" maxlength="200" placeholder="Fraude, chargeback…" /></label>
+                <p class="console-error" id="blacklist-error" hidden></p>
+                <button class="console-btn console-btn--danger" id="blacklist-submit" type="submit">Bloquer</button>
+              </form>
+              <div class="console-list" id="blacklist-list" style="margin-top:10px"></div>
+            </article>
+          </div>
+          <div class="console-grid console-grid--2" style="margin-top:16px">
+            <article class="console-card">
+              <header class="console-card__head"><div><h2>Créer un accès staff</h2><p>Le jeton est affiché une seule fois.</p></div></header>
+              <form class="console-form" id="staff-form">
+                <div class="console-form__row">
+                  <label class="field"><span>Nom</span><input id="staff-name-input" type="text" maxlength="40" required /></label>
+                  <label class="field"><span>Rôle</span><select id="staff-role-input"><option value="support">Support</option><option value="logistics">Logistique</option><option value="admin">Admin</option></select></label>
+                </div>
+                <p class="console-error" id="staff-error" hidden></p>
+                <button class="console-btn console-btn--primary" id="staff-submit" type="submit">Créer le jeton</button>
+              </form>
+              <div class="console-key" id="staff-token" hidden><span></span><button class="console-btn console-btn--sm" type="button" data-copy-token>Copier</button></div>
+            </article>
+            <article class="console-card">
+              <header class="console-card__head"><div><h2>Comptes staff</h2><p>Désactive un accès sans supprimer l’historique.</p></div></header>
+              <div class="console-list" id="staff-list"></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="console-panel" data-panel="promos" aria-label="Codes promo" hidden>
+          <article class="console-card">
+            <header class="console-card__head"><div><h2>Codes promo</h2><p>Remises en pourcentage, limites et expiration.</p></div></header>
+            <form class="console-form" id="promo-form" novalidate>
+              <div class="console-form__row console-form__row--3">
+                <label class="field"><span>Code</span><input id="promo-code" type="text" maxlength="32" required placeholder="EGO10" /></label>
+                <label class="field"><span>Remise %</span><input id="promo-percent" type="number" min="1" max="90" value="10" required /></label>
+                <label class="field"><span>Limite</span><input id="promo-max" type="number" min="1" placeholder="illimité" /></label>
+              </div>
+              <div class="console-form__row">
+                <label class="field"><span>Minimum (€)</span><input id="promo-min" type="number" min="0" step="0.01" value="0" /></label>
+                <label class="field"><span>Expiration</span><input id="promo-expiry" type="date" /></label>
+              </div>
+              <p class="console-error" id="promo-error" hidden></p>
+              <button class="console-btn console-btn--primary" id="promo-submit" type="submit">Enregistrer le code</button>
+            </form>
+          </article>
+          <article class="console-card" style="margin-top:16px">
+            <header class="console-card__head"><div><h2>Codes existants</h2><p>Consommation et état d’activation.</p></div></header>
+            <div class="console-list" id="promos-list"></div>
+            <p class="console-empty" id="promos-empty" hidden><strong>Aucun code promo</strong><span>Crée ton premier code ci-dessus.</span></p>
+          </article>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div class="console-drawer" id="order-drawer" hidden>
+    <div class="console-drawer__backdrop" data-close-order></div>
+    <aside class="console-drawer__panel" aria-label="Détail de la commande">
+      <div class="console-drawer__head"><div><p class="eyebrow">Commande</p><h2 id="order-detail-title">Détail</h2></div><button class="console-btn console-btn--sm" type="button" data-close-order>Fermer</button></div>
+      <div id="order-detail-content"></div>
+    </aside>
+  </div>
+
+  <div class="console-toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <script src="/assets/ego-admin.js?v=20261111c" defer></script>
+</body>
+</html>

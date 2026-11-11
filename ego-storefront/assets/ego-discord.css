@@ -1,0 +1,84 @@
+/* Bouton Discord OAuth2 et identité du compte client. */
+.discord-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 20px;
+  padding: 13px 16px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: #5865f2;
+  color: #fff;
+  font: 600 14px/1 Inter, sans-serif;
+  text-decoration: none;
+  box-shadow: 0 10px 24px rgba(88, 101, 242, 0.24);
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.discord-login:hover {
+  background: #4752c4;
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(88, 101, 242, 0.32);
+}
+.discord-login:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.82);
+  outline-offset: 3px;
+}
+.discord-login svg {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 0 4px;
+  color: var(--c-muted, #a99790);
+  font: 500 10px/1 Inter, sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--c-line, rgba(255, 255, 255, 0.09));
+}
+.auth-divider span {
+  white-space: nowrap;
+}
+.console-account__identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.console-account__identity > div {
+  min-width: 0;
+}
+.console-account__identity h2 {
+  margin: 0;
+}
+.console-avatar {
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--c-line, rgba(255, 255, 255, 0.09));
+  border-radius: 50%;
+  background: var(--c-bg-2, #171112);
+  object-fit: cover;
+  flex: 0 0 auto;
+}
+@media (max-width: 720px) {
+  .discord-login {
+    font-size: 13px;
+  }
+  .console-avatar {
+    width: 42px;
+    height: 42px;
+  }
+}

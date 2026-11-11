@@ -1,0 +1,161 @@
+/* ============================================================
+   EGO MARKET — espace client
+   Complète ego-admin.css : mêmes variables, mêmes composants.
+   ============================================================ */
+
+.client-orders {
+  display: grid;
+  gap: 1rem;
+}
+
+.client-order {
+  display: grid;
+  gap: .8rem;
+  padding: 1.1rem 1.2rem;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: linear-gradient(160deg, rgba(240, 232, 227, .035), rgba(240, 232, 227, .012));
+}
+
+.client-order__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.client-order__id {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  flex-wrap: wrap;
+}
+
+.client-order__date {
+  color: var(--dim);
+  font-size: .7rem;
+}
+
+.client-order__delivery {
+  margin: 0;
+  color: var(--ash);
+  font-size: .8rem;
+}
+
+.client-order__delivery strong {
+  color: var(--bone);
+  font-weight: 600;
+}
+
+.client-order__items {
+  display: grid;
+  gap: .35rem;
+  margin: 0;
+  padding: .15rem 0 0;
+  list-style: none;
+}
+
+.client-order__items li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: .35rem;
+  border-bottom: 1px dashed var(--line);
+  color: var(--ash);
+  font-size: .82rem;
+}
+
+.client-order__items li:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.client-order__items strong {
+  color: var(--bone);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.client-order__foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.client-order__totals {
+  display: grid;
+  gap: .15rem;
+  color: var(--dim);
+  font-size: .78rem;
+}
+
+.client-order__totals strong {
+  color: var(--bone);
+  font-size: .95rem;
+}
+
+.client-order__ref {
+  color: var(--dim);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .7rem;
+}
+
+.client-order__note {
+  margin: 0;
+  padding: .5rem .65rem;
+  border-radius: 10px;
+  background: rgba(240, 232, 227, .04);
+  color: var(--ash);
+  font-size: .76rem;
+}
+
+.claim-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+  align-items: end;
+  gap: .8rem;
+  padding: 0 1.4rem 1.4rem;
+}
+
+.claim-form .field {
+  display: grid;
+  gap: .35rem;
+  color: var(--ash);
+  font-size: .72rem;
+  font-weight: 600;
+}
+
+.claim-form input {
+  width: 100%;
+  height: 44px;
+  padding: 0 .75rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  outline: none;
+  background: rgba(240, 232, 227, .03);
+  color: var(--bone);
+  font: inherit;
+  font-size: .82rem;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.claim-form input:focus {
+  border-color: var(--ember);
+  box-shadow: 0 0 0 3px var(--ember-soft);
+}
+
+.claim-error {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--danger);
+  font-size: .75rem;
+}
+
+@media (max-width: 760px) {
+  .claim-form { grid-template-columns: 1fr; }
+  .claim-form .btn { width: 100%; }
+  .client-order__foot { align-items: flex-start; flex-direction: column; }
+}

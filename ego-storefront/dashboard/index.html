@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#100c0d" />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <title>Mon espace | EGO Market</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/ego-favicon.svg?v=20261110a" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/ego-admin.css?v=20261111c" />
+  <link rel="stylesheet" href="/assets/ego-console.css?v=20261111c" />
+  <link rel="stylesheet" href="/assets/ego-discord.css?v=20261112a" />
+</head>
+<body class="console-page">
+  <a class="skip-link" href="#client-main">Aller au contenu</a>
+
+  <header class="admin-header">
+    <div class="admin-container admin-header__inner">
+      <a class="admin-brand" href="/" aria-label="EGO Market — accueil">
+        <img src="/assets/ego-wordmark.svg?v=20261110a" alt="EGO Market" />
+      </a>
+      <span class="admin-badge">Espace client</span>
+      <div class="admin-header__actions">
+        <a class="admin-link" href="/products/index.html">Boutique <span aria-hidden="true">↗</span></a>
+        <a class="console-btn console-btn--ghost" href="https://discord.gg/ZBrNrpXtUw" target="_blank" rel="noopener noreferrer">Discord</a>
+        <button class="console-btn console-btn--ghost" id="client-logout" type="button" hidden>Déconnexion</button>
+        <button class="console-btn console-btn--ghost" id="forget" type="button" hidden>Oublier cet appareil</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="console-shell" id="client-main">
+    <div class="console-topbar">
+      <div>
+        <p class="eyebrow">Espace personnel</p>
+        <h1>Mon espace</h1>
+        <p id="client-lead">Suis tes commandes, récupère tes clés et contacte le support.</p>
+      </div>
+      <div class="console-topbar__actions">
+        <span class="console-updated" id="last-updated">Jamais actualisé</span>
+        <button class="console-btn" id="refresh" type="button">↻ Actualiser</button>
+      </div>
+    </div>
+
+    <div class="console-notice" id="notice" role="status" aria-live="polite" hidden></div>
+
+    <section class="console-auth" id="client-auth-panel" aria-labelledby="client-auth-title">
+      <p class="eyebrow">Compte client</p>
+      <h1 id="client-auth-title">Se connecter</h1>
+      <p id="client-auth-note">Un compte permet de retrouver tes achats et tes clés sur tous tes appareils. Le suivi par commande reste disponible sans compte.</p>
+      <a class="discord-login" href="/auth/discord" aria-label="Se connecter avec Discord">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
+        <span>Se connecter avec Discord</span>
+      </a>
+      <div class="auth-divider"><span>ou avec e-mail</span></div>
+      <form class="console-form" id="client-auth-form" novalidate>
+        <div class="console-form__row">
+          <label class="field" for="client-email"><span>E-mail</span><input id="client-email" type="email" autocomplete="email" required placeholder="toi@exemple.com" /></label>
+          <label class="field" for="client-password"><span>Mot de passe</span><input id="client-password" type="password" autocomplete="current-password" required placeholder="8 caractères minimum" /></label>
+        </div>
+        <label class="field" id="client-totp-field" hidden for="client-totp"><span>Code 2FA</span><input id="client-totp" type="text" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="000000" /></label>
+        <p class="console-error" id="client-auth-error" role="alert" hidden></p>
+        <div class="console-actions">
+          <button class="console-btn console-btn--primary" id="client-auth-submit" type="submit">Se connecter</button>
+          <button class="console-btn" id="client-auth-toggle" type="button">Créer un compte</button>
+        </div>
+      </form>
+      <p class="console-note">Mot de passe PBKDF2, sessions HttpOnly et 2FA TOTP. Aucun mot de passe n’est stocké en clair.</p>
+    </section>
+
+    <div class="kpi-grid" style="margin-top:18px">
+      <article class="kpi-card kpi-card--accent"><span>Commandes</span><strong id="stat-total">—</strong><small>sur cet espace</small></article>
+      <article class="kpi-card"><span>À vérifier</span><strong id="stat-pending">—</strong><small>paiement en attente</small></article>
+      <article class="kpi-card kpi-card--green"><span>Livrées</span><strong id="stat-delivered">—</strong><small>clés disponibles</small></article>
+      <article class="kpi-card"><span>Total suivi</span><strong id="stat-amount">—</strong><small>hors annulées</small></article>
+    </div>
+
+    <div class="console-tabs" id="client-tabs" role="tablist">
+      <button class="is-active" type="button" data-client-tab="vault">Vault</button>
+      <button type="button" data-client-tab="orders">Commandes</button>
+      <button type="button" data-client-tab="support">Support</button>
+      <button type="button" data-client-tab="account">Compte & sécurité</button>
+    </div>
+
+    <section class="console-panel" data-client-panel="vault">
+      <div class="console-card" style="margin-bottom:14px">
+        <header class="console-card__head"><div><h2>Tes clés et codes</h2><p>Masqués par défaut. Révèle ou copie uniquement quand tu en as besoin.</p></div></header>
+        <p class="console-note">Chaque clé est liée à une commande livrée. Télécharge ta facture depuis la commande correspondante.</p>
+      </div>
+      <div class="console-vault" id="vault-list"></div>
+      <p class="console-empty" id="vault-empty" hidden><strong>Aucune clé disponible</strong><span>Les clés apparaissent ici après livraison de ta commande.</span></p>
+    </section>
+
+    <section class="console-panel" data-client-panel="orders" hidden>
+      <div class="console-card" style="margin-bottom:14px">
+        <header class="console-card__head"><div><h2>Progression des commandes</h2><p>Paiement reçu → validation → livraison. La livraison se fait sur ton pseudo Discord.</p></div><span class="console-tag" id="orders-count">0 commande</span></header>
+        <div id="client-orders"></div>
+        <p class="console-empty" id="client-empty" hidden><strong>Aucune commande suivie</strong><span>Après un paiement, la commande apparaît automatiquement sur cet appareil. Sinon, ajoute-la avec son numéro et la transaction PayPal.</span></p>
+      </div>
+
+      <div class="console-grid console-grid--2">
+        <article class="console-card">
+          <header class="console-card__head"><div><h2>Retrouver une commande</h2><p>Sur un autre appareil, ajoute une commande avec son numéro et l’ID de transaction PayPal.</p></div></header>
+          <form class="console-form" id="claim-form" novalidate>
+            <label class="field" for="claim-order"><span>Numéro de commande</span><input id="claim-order" type="text" maxlength="64" autocomplete="off" placeholder="EGO-…" required /></label>
+            <label class="field" for="claim-ref"><span>ID transaction PayPal</span><input id="claim-ref" type="text" maxlength="64" autocomplete="off" placeholder="Ex. 7AB12345CD678901E" required /></label>
+            <p class="console-error" id="claim-error" role="alert" hidden></p>
+            <button class="console-btn console-btn--primary" id="claim-submit" type="submit">Ajouter au suivi</button>
+          </form>
+        </article>
+        <article class="console-card">
+          <header class="console-card__head"><div><h2>Besoin d’aide ?</h2><p>Ouvre un ticket depuis la commande concernée.</p></div></header>
+          <p class="console-note">Le support répond sur Discord dans <strong>#support-achat</strong>. Un ticket conserve l’historique et permet au staff de t’assigner un référent.</p>
+          <button class="console-btn console-btn--primary" type="button" data-go-client-tab="support">Ouvrir le support</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="console-panel" data-client-panel="support" hidden>
+      <div class="console-grid console-grid--2">
+        <article class="console-card">
+          <header class="console-card__head"><div><h2>Ouvrir un ticket</h2><p>Décris le problème et joins le numéro de commande.</p></div></header>
+          <form class="console-form" id="client-ticket-form" novalidate>
+            <label class="field" for="client-ticket-order"><span>Commande</span><select id="client-ticket-order" required></select></label>
+            <label class="field" for="client-ticket-subject"><span>Sujet</span><input id="client-ticket-subject" type="text" maxlength="120" required placeholder="Problème de livraison, clé invalide…" /></label>
+            <label class="field" for="client-ticket-message"><span>Message</span><textarea id="client-ticket-message" rows="5" required placeholder="Explique ce qui se passe…"></textarea></label>
+            <p class="console-error" id="client-ticket-error" role="alert" hidden></p>
+            <button class="console-btn console-btn--primary" id="client-ticket-submit" type="submit">Envoyer au support</button>
+          </form>
+        </article>
+        <article class="console-card">
+          <header class="console-card__head"><div><h2>FAQ express</h2><p>Les réponses aux questions les plus fréquentes.</p></div></header>
+          <div class="console-faq">
+            <details><summary>Quand vais-je recevoir ma commande ?</summary><p>Après vérification du paiement PayPal, le staff livre sur ton pseudo Discord. Le suivi passe à « Livrée » et tes clés apparaissent dans le Vault.</p></details>
+            <details><summary>Ma clé ne fonctionne pas</summary><p>Ouvre un ticket avec la commande et le message d’erreur exact. Ne publie pas ta clé en clair dans un salon public.</p></details>
+            <details><summary>Je n’ai pas saisi mon ID PayPal</summary><p>Depuis la carte de commande, ajoute l’ID de transaction dans le champ prévu. Le staff pourra vérifier plus vite.</p></details>
+            <details><summary>Puis-je retrouver mes achats sur un autre appareil ?</summary><p>Oui : crée un compte client et connecte-toi. Les commandes suivies sur cet appareil seront rattachées à ton compte.</p></details>
+          </div>
+        </article>
+      </div>
+
+      <div class="console-split" style="margin-top:16px">
+        <article class="console-card">
+          <header class="console-card__head"><div><h2>Mes tickets</h2><p>Historique des demandes support.</p></div></header>
+          <div class="console-ticket-list" id="client-ticket-list"></div>
+          <p class="console-empty" id="client-ticket-empty" hidden><strong>Aucun ticket</strong><span>Ouvre une demande ci-dessus.</span></p>
+        </article>
+        <article class="console-card">
+          <div id="client-ticket-thread-empty" class="console-empty"><strong>Sélectionne un ticket</strong><span>La conversation apparaîtra ici.</span></div>
+          <div id="client-ticket-thread" hidden>
+            <header class="console-card__head"><div><h2 id="client-ticket-subject">Ticket</h2><p id="client-ticket-meta">—</p></div><span class="console-tag" id="client-ticket-status">—</span></header>
+            <div class="console-thread" id="client-ticket-messages"></div>
+            <form class="console-reply" id="client-ticket-reply-form">
+              <label class="field"><span>Répondre</span><textarea id="client-ticket-reply" rows="3" required></textarea></label>
+              <button class="console-btn console-btn--primary" id="client-ticket-send" type="submit">Envoyer</button>
+            </form>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="console-panel" data-client-panel="account" hidden>
+      <div class="console-empty" id="account-signed-out"><strong>Connecte-toi pour sécuriser ton espace</strong><span>Ton compte permet de retrouver tes commandes et de gérer ton mot de passe, la 2FA et tes sessions.</span></div>
+      <div id="account-signed-in" hidden>
+        <div class="console-account">
+          <article class="console-card">
+            <header class="console-card__head">
+              <div class="console-account__identity">
+                <img id="account-avatar" class="console-avatar" alt="" hidden />
+                <div><h2 id="account-display">Compte client</h2><p id="account-email">—</p></div>
+              </div>
+              <span class="console-tag" id="account-2fa-status">2FA désactivée</span>
+            </header>
+            <p class="console-note">Les sessions sont protégées par un cookie HttpOnly. La déconnexion révoque la session courante.</p>
+            <button class="console-btn console-btn--danger" id="account-logout" type="button">Se déconnecter</button>
+          </article>
+          <article class="console-card" id="password-card">
+            <header class="console-card__head"><div><h2>Mot de passe</h2><p>Change ton mot de passe et révoque les autres sessions.</p></div></header>
+            <form class="console-form" id="password-form">
+              <label class="field"><span>Mot de passe actuel</span><input id="current-password" type="password" autocomplete="current-password" required /></label>
+              <label class="field"><span>Nouveau mot de passe</span><input id="new-password" type="password" autocomplete="new-password" required placeholder="8 caractères minimum" /></label>
+              <p class="console-error" id="password-error" hidden></p>
+              <button class="console-btn console-btn--primary" id="password-submit" type="submit">Mettre à jour</button>
+            </form>
+          </article>
+          <article class="console-card">
+            <header class="console-card__head"><div><h2>Double authentification</h2><p>Ajoute un code TOTP à chaque connexion.</p></div></header>
+            <div id="twofa-setup-block">
+              <p class="console-note">Génère un secret, ajoute-le dans ton application d’authentification, puis valide un code.</p>
+              <button class="console-btn console-btn--primary" id="twofa-setup" type="button">Configurer la 2FA</button>
+              <div id="twofa-secret-box" hidden style="margin-top:10px">
+                <div class="console-key"><span id="twofa-secret">—</span></div>
+                <p class="console-note" id="twofa-uri"></p>
+                <form class="console-form" id="twofa-enable-form" style="margin-top:8px">
+                  <label class="field"><span>Code à 6 chiffres</span><input id="twofa-code" type="text" inputmode="numeric" maxlength="6" required /></label>
+                  <p class="console-error" id="twofa-error" hidden></p>
+                  <button class="console-btn console-btn--primary" id="twofa-enable" type="submit">Activer la 2FA</button>
+                </form>
+              </div>
+            </div>
+            <div id="twofa-disable-block" hidden>
+              <p class="console-note">La 2FA est active. Entre un code valide pour la désactiver.</p>
+              <form class="console-form" id="twofa-disable-form">
+                <label class="field"><span>Code à 6 chiffres</span><input id="twofa-disable-code" type="text" inputmode="numeric" maxlength="6" required /></label>
+                <p class="console-error" id="twofa-disable-error" hidden></p>
+                <button class="console-btn console-btn--danger" id="twofa-disable" type="submit">Désactiver la 2FA</button>
+              </form>
+            </div>
+          </article>
+          <article class="console-card">
+            <header class="console-card__head"><div><h2>Sessions actives</h2><p>Révoque un appareil que tu ne reconnais pas.</p></div></header>
+            <div class="console-list" id="sessions-list"></div>
+          </article>
+          <article class="console-card">
+            <header class="console-card__head"><div><h2>Historique de connexion</h2><p>Dernières activités du compte.</p></div></header>
+            <div class="console-list" id="events-list"></div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="console-toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <script src="/assets/ego-client.js?v=20261112a" defer></script>
+</body>
+</html>

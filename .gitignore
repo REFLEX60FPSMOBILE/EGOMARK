@@ -4,5 +4,7 @@ dist
 .dev.vars
 .dev.vars.*
 !.dev.vars.example
+# Fichier temporaire pour téléverser le secret Discord vers Sites.
+.discord-client-secret
 .DS_Store
 *.log

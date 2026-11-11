@@ -17,3 +17,9 @@ PAYPAL_ME_HANDLE=EGOMarket265
 
 # Sel des empreintes d'e-mail : une valeur aléatoire longue en production.
 # REVIEW_SALT=
+
+# Connexion Discord OAuth2. Le Client ID public peut rester dans le code ;
+# le Client Secret ne doit jamais être commité ni collé dans le chat.
+# DISCORD_CLIENT_ID=
+# DISCORD_CLIENT_SECRET=
+# DISCORD_REDIRECT_URI=https://egomarket.freebuff.page/auth/callback

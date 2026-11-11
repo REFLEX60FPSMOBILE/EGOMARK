@@ -14,7 +14,7 @@
     "build:store": "python scripts/check_catalog.py && python scripts/check_descriptions.py && wrangler deploy --config wrangler.storefront.jsonc --dry-run --outdir dist/storefront && python scripts/build_store_assets.py && python scripts/check_descriptions.py --built",
     "preview": "vite preview",
     "dev:store": "wrangler dev --config wrangler.storefront.jsonc --port 4176",
-    "db:local": "wrangler d1 execute ego-reviews --config wrangler.storefront.jsonc --local --file=./migrations/0001_reviews.sql && wrangler d1 execute ego-reviews --config wrangler.storefront.jsonc --local --file=./migrations/0002_payments.sql && wrangler d1 execute ego-reviews --config wrangler.storefront.jsonc --local --file=./migrations/0003_manual_orders.sql && wrangler d1 execute ego-reviews --config wrangler.storefront.jsonc --local --file=./migrations/0004_promo_codes.sql",
+    "db:local": "wrangler d1 execute ego-reviews --config wrangler.storefront.jsonc --local --file=./migrations/0001_reviews.sql && wrangler d1 execute ego-reviews --config wrangler.storefront.jsonc --local --file=./migrations/0002_payments.sql && wrangler d1 execute ego-reviews --config wrangler.storefront.jsonc --local --file=./migrations/0003_manual_orders.sql && wrangler d1 execute ego-reviews --config wrangler.storefront.jsonc --local --file=./migrations/0004_promo_codes.sql && wrangler d1 execute ego-reviews --config wrangler.storefront.jsonc --local --file=./migrations/0005_console.sql && wrangler d1 execute ego-reviews --config wrangler.storefront.jsonc --local --file=./migrations/0006_discord_oauth.sql",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
